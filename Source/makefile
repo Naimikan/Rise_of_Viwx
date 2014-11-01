@@ -4,15 +4,26 @@ CFLAGS := -c -Wall
 OBJDIR := ../obj
 DISTDIR := ../Distribution
 
-all: compileMain
+APPLICATIONDIR := Application
+
+all: compileApplication compileMain createExecutable
+
+compileApplication: $(OBJDIR)/Application.o
 
 compileMain: $(OBJDIR)/main.o
+	
+createExecutable:
 	@mkdir -p $(DISTDIR)
-	$(CC) $(OBJDIR)/main.o -o $(DISTDIR)/RiseOfViwx
+	$(CC) $(OBJDIR)/*.o -o $(DISTDIR)/RiseOfViwx
 	
 $(OBJDIR)/main.o: main.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
+$(OBJDIR)/Application.o: $(APPLICATIONDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
 clean:
+	rm $(DISTDIR) *~ -rf
 	rm $(OBJDIR) *~ -rf

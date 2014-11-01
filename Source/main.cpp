@@ -1,7 +1,7 @@
-#include "Core/iGlobals.hpp"
+#include "Application/cApplication.hpp"
 
-int main() {
-	std::cout << "Rise of Vivw" << std::endl;
-	
-	return 0;
+int main(int argc, char* args[]) {
+	Application application;
+
+	return application.OnExecute();
 }
