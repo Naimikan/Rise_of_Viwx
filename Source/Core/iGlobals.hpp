@@ -19,4 +19,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 
+// Utiles
+#include "Utils/cUtils.hpp"
+
 #endif // End _IGLOBALS_HPP_

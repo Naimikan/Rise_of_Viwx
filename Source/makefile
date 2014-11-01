@@ -5,10 +5,13 @@ OBJDIR := ../obj
 DISTDIR := ../Distribution
 
 APPLICATIONDIR := Application
+UTILSDIR := Core/Utils
 
-all: compileApplication compileMain createExecutable
+all: compileUtils compileApplication compileMain createExecutable
 
 compileApplication: $(OBJDIR)/Application.o
+
+compileUtils: $(OBJDIR)/Utils.o
 
 compileMain: $(OBJDIR)/main.o
 	
@@ -21,6 +24,10 @@ $(OBJDIR)/main.o: main.cpp
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(OBJDIR)/Application.o: $(APPLICATIONDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+	
+$(OBJDIR)/Utils.o: $(UTILSDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
