@@ -5,26 +5,35 @@ LDFLAGS := -lSDL -lSDL_mixer -lSDL_ttf -lSDL_image
 OBJDIR := Obj
 DISTDIR := Distribution
 SRCDIR := Source
+SRCCOREDIR := $(SRCDIR)/Core
 LOGDIR := Logs
 PROJECTNAME := RiseOfViwx
 
 APPLICATIONDIR := $(SRCDIR)/Application
-UTILSDIR := $(SRCDIR)/Core/Utils
-LOGGERDIR := $(SRCDIR)/Core/Logger
-SETTINGSCREATORDIR := $(SRCDIR)/Core/SettingsCreator
+UTILSDIR := $(SRCCOREDIR)/Utils
+LOGGERDIR := $(SRCCOREDIR)/Logger
+SETTINGSCREATORDIR := $(SRCCOREDIR)/SettingsCreator
+GENERICEXCEPTIONDIR := $(SRCCOREDIR)/Exception
+SDLEXCEPTIONDIR := $(SRCCOREDIR)/Exception/SDLException
 
 .PHONY: all
 all: core application main createExecutable
 
 application: $(OBJDIR)/Application.o
 
-core: utils logger settings
+core: utils logger exceptions settings
+
+exceptions: genericexception sdlexception
 
 utils: $(OBJDIR)/Utils.o
 
 logger: $(OBJDIR)/Logger.o
 
 settings: $(OBJDIR)/SettingsCreator.o
+
+genericexception: $(OBJDIR)/GenericException.o
+
+sdlexception: $(OBJDIR)/SDLException.o
 
 main: $(OBJDIR)/main.o
 
@@ -50,6 +59,14 @@ $(OBJDIR)/Logger.o: $(LOGGERDIR)/*.cpp
 	$(CC) -c -o $@ $< $(CFLAGS)
 	
 $(OBJDIR)/SettingsCreator.o: $(SETTINGSCREATORDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+	
+$(OBJDIR)/GenericException.o: $(GENERICEXCEPTIONDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+	
+$(OBJDIR)/SDLException.o: $(SDLEXCEPTIONDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
