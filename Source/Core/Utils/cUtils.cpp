@@ -18,33 +18,3 @@ std::string Utils::Trim(std::string const& parSource, char const* parDelimiter) 
 
 	return result;
 }
-
-std::string Utils::UnsignedIntToString(unsigned int parNumber) {
-	std::stringstream ss;
-	ss << parNumber;
-	return ss.str();
-}
-
-std::string Utils::IntegerToString(int parNumber) {
-	std::stringstream ss;
-	ss << parNumber;
-	return ss.str();
-}
-
-std::string Utils::LongToString(long parNumber) {
-	std::stringstream ss;
-	ss << parNumber;
-	return ss.str();
-}
-
-std::string Utils::DoubleToString(double parNumber) {
-	std::stringstream ss;
-	ss << parNumber;
-	return ss.str();
-}
-
-std::string Utils::FloatToString(float parNumber) {
-	std::stringstream ss;
-	ss << parNumber;
-	return ss.str();
-}

@@ -11,11 +11,11 @@ class Utils {
 		static std::string Trim(std::string const& parSource, char const* parDelimiter = "\t\r\n");
 
 		// ToString
-		static std::string UnsignedIntToString(unsigned int parNumber);
-		static std::string IntegerToString(int parNumber);
-		static std::string LongToString(long parNumber);
-		static std::string DoubleToString(double parNumber);
-		static std::string FloatToString(float parNumber);
+		template <typename T> static std::string ToString(const T& parValue) {
+			std::ostringstream stm ;
+			stm << parValue;
+			return stm.str() ;
+		}
 };
 
 #endif // End _CUTILES_HPP_
