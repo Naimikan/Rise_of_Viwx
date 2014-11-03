@@ -5,7 +5,7 @@ LDFLAGS := -lSDL -lSDL_mixer -lSDL_ttf -lSDL_image
 OBJDIR := Obj
 DISTDIR := Distribution
 SRCDIR := Source
-LOGDIR := Logger
+LOGDIR := Logs
 PROJECTNAME := RiseOfViwx
 
 APPLICATIONDIR := $(SRCDIR)/Application

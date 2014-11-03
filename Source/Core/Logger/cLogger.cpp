@@ -3,7 +3,7 @@
 std::fstream Logger::logFile;
 
 void Logger::WriteMessageInLogFile(const char* parMessage) {
-	logFile.open("Logger/Game.log", std::fstream::in | std::fstream::out | std::fstream::app);
+	logFile.open("Logs/Game.log", std::fstream::in | std::fstream::out | std::fstream::app);
 
 	std::string finalLogMessage;
 
