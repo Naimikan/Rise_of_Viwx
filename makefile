@@ -5,17 +5,21 @@ LDFLAGS := -lSDL -lSDL_mixer -lSDL_ttf -lSDL_image
 OBJDIR := Obj
 DISTDIR := Distribution
 SRCDIR := Source
+LOGDIR := Logger
 PROJECTNAME := RiseOfViwx
 
 APPLICATIONDIR := $(SRCDIR)/Application
 UTILSDIR := $(SRCDIR)/Core/Utils
+LOGGERDIR := $(SRCDIR)/Core/Logger
 
 .PHONY: all
-all: utils application main createExecutable
+all: utils logger application main createExecutable
 
 application: $(OBJDIR)/Application.o
 
 utils: $(OBJDIR)/Utils.o
+
+logger: $(OBJDIR)/Logger.o
 
 main: $(OBJDIR)/main.o
 
@@ -35,6 +39,11 @@ $(OBJDIR)/Application.o: $(APPLICATIONDIR)/*.cpp
 $(OBJDIR)/Utils.o: $(UTILSDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
+	
+$(OBJDIR)/Logger.o: $(LOGGERDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	@mkdir -p $(LOGDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
 .PHONY: install
 install:
@@ -44,3 +53,4 @@ install:
 clean:
 	rm $(DISTDIR) *~ -rf
 	rm $(OBJDIR) *~ -rf
+	rm $(LOGDIR) *~ -rf

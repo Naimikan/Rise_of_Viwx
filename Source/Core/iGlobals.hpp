@@ -22,6 +22,9 @@
 // Utiles
 #include "Utils/cUtils.hpp"
 
+// Logger
+#include "Logger/cLogger.hpp"
+
 // SDL
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
