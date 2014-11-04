@@ -5,21 +5,41 @@ Application::Application() : isRunning(true), screen(NULL) {
 }
 
 int Application::OnExecute() {
-	OnInit();
-	
-	std::cout << "Rise of Viwx" << std::endl;
-	Logger::WriteMessageInLogFile("Test Log - Rise of Viwx");
+	try {
+		std::cout << "Rise of Viwx" << std::endl;
+
+		OnInit();
+	} catch (const SDLException& sdlException) {
+		std::string finalMessage;
+		finalMessage.append("<SDL Error>");
+		finalMessage.append(" => ");
+		finalMessage.append(sdlException.WhatHappens());
+
+		Logger::WriteMessageInLogFile(finalMessage.c_str());
+		return -1;
+	} catch (const TTFException& ttfException) {
+		std::string finalMessage;
+		finalMessage.append("<TTF Error>");
+		finalMessage.append(" => ");
+		finalMessage.append(ttfException.WhatHappens());
+
+		Logger::WriteMessageInLogFile(finalMessage.c_str());
+		return -1;
+	} catch (const GenericException& exception) {
+		Logger::WriteMessageInLogFile(exception.WhatHappens());
+		return -1;
+	}
 	
 	return 0;
 }
 
-bool Application::OnInit() {
+bool Application::OnInit() throw(GenericException) {
 	int windowWidth, windowHeight, windowBPP, windowFullScreen;
 
 	windowWidth = windowHeight = windowBPP = windowFullScreen = 0;
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-		return false;
+		throw SDLException();
 	}
 
 	SDL_EnableKeyRepeat(1, SDL_DEFAULT_REPEAT_INTERVAL / 3);
@@ -49,7 +69,7 @@ bool Application::OnInit() {
 	}
 
 	if ((screen = SDL_SetVideoMode(windowWidth, windowHeight, windowBPP, flags)) == NULL) {
-		return false;
+		throw SDLException();
 	}
 
 	std::string applicationName, version;
@@ -74,6 +94,11 @@ bool Application::OnInit() {
 	caption.append(version);
 
 	SDL_WM_SetCaption(caption.c_str(), NULL);
+
+	// Initialize SDL_ttf
+	if(TTF_Init() == -1) {
+		throw TTFException();
+	}
 
 	return true;
 }

@@ -25,6 +25,15 @@
 // Logger
 #include "Logger/cLogger.hpp"
 
+// Exceptions
+#include "Exception/cGenericException.hpp"
+
+// SDL Exceptions
+#include "Exception/SDLException/cSDLException.hpp"
+
+// TTF Exceptions
+#include "Exception/TTFException/cTTFException.hpp"
+
 // SDL
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"

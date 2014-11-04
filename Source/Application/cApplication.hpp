@@ -9,7 +9,7 @@ class Application {
 		Application();
 		
 		int OnExecute();
-		bool OnInit();
+		bool OnInit() throw (GenericException);
 		
 	private:
 		bool isRunning;
