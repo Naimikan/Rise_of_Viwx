@@ -11,13 +11,14 @@ void SettingsCreator::OnCleanUp() {
 	configFileValues.clear();
 }
 
-void SettingsCreator::OpenFile(const std::string& parFileName) {
+void SettingsCreator::OpenFile(const std::string& parFileName) throw(GenericException) {
 	//configFile.exceptions(std::ofstream::failbit | std::ofstream::badbit);
 
-    configFile.open(parFileName.c_str());
-    configFile.clear();
+	configFile.open(parFileName.c_str());
+	configFile.clear();
 
-    configFileName = parFileName;
+	configFileName = parFileName;
+
 }
 
 void SettingsCreator::CloseFile() {

@@ -45,7 +45,7 @@ class SettingsCreator {
 			}
 		};
 
-		static void OpenFile(const std::string& parFileName);
+		static void OpenFile(const std::string& parFileName) throw(GenericException);
 		static void CloseFile();
 		static bool ExistConfigFile(const std::string& parFileName);
 

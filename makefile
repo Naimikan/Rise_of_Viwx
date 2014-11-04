@@ -16,13 +16,14 @@ SETTINGSCREATORDIR := $(SRCCOREDIR)/SettingsCreator
 GENERICEXCEPTIONDIR := $(SRCCOREDIR)/Exception
 SDLEXCEPTIONDIR := $(SRCCOREDIR)/Exception/SDLException
 TTFEXCEPTIONDIR := $(SRCCOREDIR)/Exception/TTFException
+EVENTDIR := $(SRCCOREDIR)/Event
 
 .PHONY: all
 all: core application main createExecutable
 
 application: $(OBJDIR)/Application.o
 
-core: utils logger exceptions settings
+core: utils logger exceptions settings event
 
 exceptions: genericexception sdlexception ttfexception
 
@@ -31,6 +32,8 @@ utils: $(OBJDIR)/Utils.o
 logger: $(OBJDIR)/Logger.o
 
 settings: $(OBJDIR)/SettingsCreator.o
+
+event: $(OBJDIR)/Event.o
 
 genericexception: $(OBJDIR)/GenericException.o
 
@@ -74,6 +77,10 @@ $(OBJDIR)/SDLException.o: $(SDLEXCEPTIONDIR)/*.cpp
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(OBJDIR)/TTFException.o: $(TTFEXCEPTIONDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+	
+$(OBJDIR)/Event.o: $(EVENTDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 

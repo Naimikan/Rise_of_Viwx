@@ -6,9 +6,18 @@ Application::Application() : isRunning(true), screen(NULL) {
 
 int Application::OnExecute() {
 	try {
-		std::cout << "Rise of Viwx" << std::endl;
-
 		OnInit();
+		
+		while (isRunning) {
+			while (SDL_PollEvent(&eventHandled)) {
+				OnEvent(&eventHandled);
+			}
+			
+			OnLoop();
+			OnRender();
+		}
+		
+		OnCleanUp();
 	} catch (const SDLException& sdlException) {
 		std::string finalMessage;
 		finalMessage.append("<SDL Error>");
@@ -101,4 +110,43 @@ bool Application::OnInit() throw(GenericException) {
 	}
 
 	return true;
+}
+
+void Application::OnLoop() {
+	
+}
+
+void Application::OnRender() {
+	// Increiblemente importante
+	// Limpiar la pantalla de "suciedad"
+	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0, 0, 0));
+	
+	SDL_Flip(screen);
+}
+
+void Application::OnExit() {
+	isRunning = false;
+}
+
+void Application::OnEvent(SDL_Event* parEvent) {
+	Event::OnEvent(parEvent);
+}
+
+void Application::OnCleanUp() {
+	SettingsCreator::OnCleanUp();
+
+	SDL_FreeSurface(screen);
+
+	TTF_Quit();
+	SDL_Quit();
+}
+
+void Application::OnKeyDown(SDLKey parSym, SDLMod parMod, Uint16 parUnicode) {
+	switch(parSym) {
+		case SDLK_ESCAPE: 
+			OnExit();
+			break;
+			
+		default: { }
+	}
 }
