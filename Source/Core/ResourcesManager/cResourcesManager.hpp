@@ -7,7 +7,8 @@
 
 class ResourcesManager {
 	public:
-		static void AddFont(std::string parFontName, const char* parFontPath, int parFontSize);
+		// Por defecto, el tamaño de la fuente será de 16
+		static void AddFont(std::string parFontName, const char* parFontPath, int parFontSize = 16);
 		static void AddAllFontsByPath(const char* parFontPath);
 
 		static Font* GetFont(std::string parFontName) throw(TTFException);

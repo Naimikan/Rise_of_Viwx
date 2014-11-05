@@ -19,8 +19,6 @@ void ResourcesManager::AddAllFontsByPath(const char* parFontPath) {
 	struct dirent *direntPointer;
 	std::string fontName;
 
-	int defaultFontSize = 16;
-
 	if((directory = opendir(parFontPath)) == NULL) {
 		throw GenericException("Error al abrir el directorio.");
 	}
@@ -31,12 +29,11 @@ void ResourcesManager::AddAllFontsByPath(const char* parFontPath) {
 			fullName.append("/");
 			fullName.append(direntPointer->d_name);
 
-			// Caca C++, no deja hacer switch de strings
 			if (direntPointer->d_name == ResourcesManager::Lazy) {
 				fontName = ResourcesManager::Lazy;
 			}
 
-			AddFont(fontName, fullName.c_str(), defaultFontSize);
+			AddFont(fontName, fullName.c_str());
 		}
 	}
 
@@ -52,7 +49,13 @@ Font* ResourcesManager::GetFont(std::string parFontName) throw(TTFException) {
 		throw TTFException("Fonts list empty.");
 	}
 
-	return (fontsList.find(parFontName)->second);
+	std::map<std::string, Font*>::const_iterator iteratorFontFound = fontsList.find(parFontName);
+
+	if (iteratorFontFound != fontsList.end()) {
+		return iteratorFontFound->second;
+	} else {
+		throw TTFException("Font not found.");
+	}
 }
 
 void ResourcesManager::DeleteFonts() {
@@ -62,4 +65,3 @@ void ResourcesManager::DeleteFonts() {
 
 	fontsList.clear();
 }
-
