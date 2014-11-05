@@ -17,13 +17,15 @@ GENERICEXCEPTIONDIR := $(SRCCOREDIR)/Exception
 SDLEXCEPTIONDIR := $(SRCCOREDIR)/Exception/SDLException
 TTFEXCEPTIONDIR := $(SRCCOREDIR)/Exception/TTFException
 EVENTDIR := $(SRCCOREDIR)/Event
+RESOURCESMANAGERDIR := $(SRCCOREDIR)/ResourcesManager
+FONTDIR := $(RESOURCESMANAGERDIR)/Font
 
 .PHONY: all
 all: core application main createExecutable
 
 application: $(OBJDIR)/Application.o
 
-core: utils logger exceptions settings event
+core: utils logger exceptions settings event resourcesmanager
 
 exceptions: genericexception sdlexception ttfexception
 
@@ -32,6 +34,10 @@ utils: $(OBJDIR)/Utils.o
 logger: $(OBJDIR)/Logger.o
 
 settings: $(OBJDIR)/SettingsCreator.o
+
+resourcesmanager: font $(OBJDIR)/ResourcesManager.o
+
+font: $(OBJDIR)/Font.o
 
 event: $(OBJDIR)/Event.o
 
@@ -81,6 +87,14 @@ $(OBJDIR)/TTFException.o: $(TTFEXCEPTIONDIR)/*.cpp
 	$(CC) -c -o $@ $< $(CFLAGS)
 	
 $(OBJDIR)/Event.o: $(EVENTDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(OBJDIR)/ResourcesManager.o: $(RESOURCESMANAGERDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(OBJDIR)/Font.o: $(FONTDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 

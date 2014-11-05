@@ -5,7 +5,7 @@
 
 #include "../Core/Event/cEvent.hpp"
 #include "../Core/SettingsCreator/cSettingsCreator.hpp"
-
+#include "../Core/ResourcesManager/cResourcesManager.hpp"
 
 class Application : public Event {
 	public:
