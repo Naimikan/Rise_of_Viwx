@@ -109,6 +109,8 @@ bool Application::OnInit() throw(GenericException) {
 		throw TTFException();
 	}
 
+	ResourcesManager::AddAllFontsByPath("./Media/Fonts");
+
 	return true;
 }
 
@@ -120,6 +122,27 @@ void Application::OnRender() {
 	// Increiblemente importante
 	// Limpiar la pantalla de "suciedad"
 	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0, 0, 0));
+
+	SDL_Surface *message = NULL;
+
+	SDL_Color textColor = { 255, 255, 255 };
+
+	Font* lazyFont = ResourcesManager::GetFont(ResourcesManager::Lazy);
+	lazyFont->SetStyle(TTF_STYLE_UNDERLINE);
+	lazyFont->SetOutline(TTF_STYLE_BOLD);
+	lazyFont->SetHinting(TTF_HINTING_NONE);
+	lazyFont->SetKerning(false);
+	lazyFont->SetSize(26);
+
+	message = TTF_RenderText_Solid(lazyFont->GetTTF_Font(), "Hola", textColor);
+
+	//Holds offsets
+	SDL_Rect offset;
+	//Get offsets
+	offset.x = 200;
+	offset.y = 150;
+	//Blit
+	SDL_BlitSurface(message, NULL, screen, &offset);
 	
 	SDL_Flip(screen);
 }
@@ -133,6 +156,8 @@ void Application::OnEvent(SDL_Event* parEvent) {
 }
 
 void Application::OnCleanUp() {
+	ResourcesManager::DeleteFonts();
+
 	SettingsCreator::OnCleanUp();
 
 	SDL_FreeSurface(screen);
