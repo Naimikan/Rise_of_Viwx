@@ -92,21 +92,22 @@ void SettingsCreator::ConfigureSettingsFile() {
 			22050 - Calidad media
 			44100 - Calidad alta
 		*/
-		PutValue("Audio Settings", "Audio Rate", "22050");
+		PutValue("Audio Settings", "Audio Rate", "44100");
 
 		/*
-        	AUDIO_U8 - Unsigned 8-bit samples
-        	AUDIO_S8 - Signed 8-bit samples
-        	AUDIO_U16LSB - Unsigned 16-bit samples in little-endian byte order
-        	AUDIO_S16LSB - Signed 16-bit samples in little-endian byte order
-        	AUDIO_U16MSB - Unsigned 16-bit samples in big-endian byte order
-        	AUDIO_S16MSB - Signed 16-bit samples in big-endian byte order
-        	AUDIO_U16 - Same as AUDIO_U16LSB
-        	AUDIO_S16 - Same as AUDIO_S16LSB
-        	AUDIO_U16SYS - Unsigned 16-bit samples in the system's byte order
-        	AUDIO_S16SYS - Signed 16-bit samples in the system's byte order
+        	1 - AUDIO_U8 - Unsigned 8-bit samples
+        	2 - AUDIO_S8 - Signed 8-bit samples
+        	3 - AUDIO_U16LSB - Unsigned 16-bit samples in little-endian byte order
+        	4 - AUDIO_S16LSB - Signed 16-bit samples in little-endian byte order
+        	5 - AUDIO_U16MSB - Unsigned 16-bit samples in big-endian byte order
+        	6 - AUDIO_S16MSB - Signed 16-bit samples in big-endian byte order
+        	7 - AUDIO_U16 - Same as AUDIO_U16LSB
+        	8 - AUDIO_S16 - Same as AUDIO_S16LSB
+        	9 - AUDIO_U16SYS - Unsigned 16-bit samples in the system's byte order
+        	10 - AUDIO_S16SYS - Signed 16-bit samples in the system's byte order
+        	11 - MIX_DEFAULT_FORMAT
 		*/
-		PutValue("Audio Settings", "Audio Format", ""); 
+		PutValue("Audio Settings", "Audio Format", "11"); 
 
 		/*
 			1 - Mono

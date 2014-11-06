@@ -44,7 +44,6 @@ int Application::OnExecute() {
 
 bool Application::OnInit() throw(GenericException) {
 	int windowWidth, windowHeight, windowBPP, windowFullScreen;
-
 	windowWidth = windowHeight = windowBPP = windowFullScreen = 0;
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -128,20 +127,45 @@ bool Application::OnInit() throw(GenericException) {
 		}
 	}
 
+	int audioRate, audioChannels, audioBuffers;
+	audioRate = audioChannels = audioBuffers = 0;
 	
+	Uint16 audioFormat = 0;
 
 	std::map<std::string, std::string> audioSettingsSection = SettingsCreator::GetSettingsBySection("Audio Settings");
 
 	for (std::map<std::string, std::string>::iterator mapIterator = audioSettingsSection.begin(); mapIterator != audioSettingsSection.end(); ++mapIterator) {
 		std::pair<std::string, std::string> pairItem = (*mapIterator);
 
-
+		if (pairItem.first == "Audio Rate") {
+			audioRate = atoi(pairItem.second.c_str());
+		} else if (pairItem.first == "Audio Format") {
+			int tempAudioFormat = atoi(pairItem.second.c_str());
+			
+			switch (tempAudioFormat) {
+				case 1: audioFormat = AUDIO_U8; break;
+				case 2: audioFormat = AUDIO_S8; break;
+				case 3: audioFormat = AUDIO_U16LSB; break;
+				case 4: audioFormat = AUDIO_S16LSB; break;
+				case 5: audioFormat = AUDIO_U16MSB; break;
+				case 6: audioFormat = AUDIO_S16MSB; break;
+				case 7: audioFormat = AUDIO_U16; break;
+				case 8: audioFormat = AUDIO_S16; break;
+				case 9: audioFormat = AUDIO_U16SYS; break;
+				case 10: audioFormat = AUDIO_S16SYS; break;
+				case 11: audioFormat = MIX_DEFAULT_FORMAT; break;
+			}
+		} else if (pairItem.first == "Audio Channels") {
+			audioChannels = atoi(pairItem.second.c_str());
+		} else if (pairItem.first == "Audio Buffers") {
+			audioBuffers = atoi(pairItem.second.c_str());
+		}
 	}
 
 	// Initialize SDL_mixer
-	/*if () {
-
-	}*/
+	if (Mix_OpenAudio(audioRate, audioFormat, audioChannels, audioBuffers) == -1) {
+		throw MixerException();
+	}
 
 	ResourcesManager::OnInit(fontsPath.c_str(), soundsPath.c_str(), musicsPath.c_str(), imagesPath.c_str());
 
@@ -168,7 +192,7 @@ void Application::OnRender() {
 	lazyFont->SetKerning(false);
 	lazyFont->SetSize(26);
 
-	message = TTF_RenderText_Solid(lazyFont->GetTTF_Font(), "Hola", textColor);
+	message = TTF_RenderText_Solid(lazyFont->GetTTF_Font(), "Rise of Viwx", textColor);
 
 	//Holds offsets
 	SDL_Rect offset;
