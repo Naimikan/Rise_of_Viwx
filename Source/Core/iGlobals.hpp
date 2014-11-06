@@ -34,6 +34,9 @@
 // TTF Exceptions
 #include "Exception/TTFException/cTTFException.hpp"
 
+// Mixer Exceptions
+#include "Exception/MixerException/cMixerException.hpp"
+
 // SDL
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"

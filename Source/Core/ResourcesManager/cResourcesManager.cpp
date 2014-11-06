@@ -65,3 +65,11 @@ void ResourcesManager::DeleteFonts() {
 
 	fontsList.clear();
 }
+
+void ResourcesManager::OnCleanUp() {
+	DeleteFonts();
+}
+
+void ResourcesManager::OnInit(const char* parFontPath, const char* parSoundPath, const char* parMusicPath, const char* parImagePath) {
+	AddAllFontsByPath(parFontPath);
+}

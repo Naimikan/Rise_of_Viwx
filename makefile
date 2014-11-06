@@ -16,6 +16,7 @@ SETTINGSCREATORDIR := $(SRCCOREDIR)/SettingsCreator
 GENERICEXCEPTIONDIR := $(SRCCOREDIR)/Exception
 SDLEXCEPTIONDIR := $(SRCCOREDIR)/Exception/SDLException
 TTFEXCEPTIONDIR := $(SRCCOREDIR)/Exception/TTFException
+MIXEREXCEPTIONDIR := $(SRCCOREDIR)/Exception/MixerException
 EVENTDIR := $(SRCCOREDIR)/Event
 RESOURCESMANAGERDIR := $(SRCCOREDIR)/ResourcesManager
 FONTDIR := $(RESOURCESMANAGERDIR)/Font
@@ -27,7 +28,7 @@ application: $(OBJDIR)/Application.o
 
 core: utils logger exceptions settings event resourcesmanager
 
-exceptions: genericexception sdlexception ttfexception
+exceptions: genericexception sdlexception ttfexception mixerexception
 
 utils: $(OBJDIR)/Utils.o
 
@@ -46,6 +47,8 @@ genericexception: $(OBJDIR)/GenericException.o
 sdlexception: $(OBJDIR)/SDLException.o
 
 ttfexception: $(OBJDIR)/TTFException.o
+
+mixerexception: $(OBJDIR)/MixerException.o
 
 main: $(OBJDIR)/main.o
 
@@ -83,6 +86,10 @@ $(OBJDIR)/SDLException.o: $(SDLEXCEPTIONDIR)/*.cpp
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(OBJDIR)/TTFException.o: $(TTFEXCEPTIONDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(OBJDIR)/MixerException.o: $(MIXEREXCEPTIONDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 	

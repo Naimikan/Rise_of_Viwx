@@ -86,6 +86,37 @@ void SettingsCreator::ConfigureSettingsFile() {
 
 		PutBlankLine();
 
+		PutSection("Audio Settings");
+		/*
+			11025 - Calidad baja
+			22050 - Calidad media
+			44100 - Calidad alta
+		*/
+		PutValue("Audio Settings", "Audio Rate", "22050");
+
+		/*
+        	AUDIO_U8 - Unsigned 8-bit samples
+        	AUDIO_S8 - Signed 8-bit samples
+        	AUDIO_U16LSB - Unsigned 16-bit samples in little-endian byte order
+        	AUDIO_S16LSB - Signed 16-bit samples in little-endian byte order
+        	AUDIO_U16MSB - Unsigned 16-bit samples in big-endian byte order
+        	AUDIO_S16MSB - Signed 16-bit samples in big-endian byte order
+        	AUDIO_U16 - Same as AUDIO_U16LSB
+        	AUDIO_S16 - Same as AUDIO_S16LSB
+        	AUDIO_U16SYS - Unsigned 16-bit samples in the system's byte order
+        	AUDIO_S16SYS - Signed 16-bit samples in the system's byte order
+		*/
+		PutValue("Audio Settings", "Audio Format", ""); 
+
+		/*
+			1 - Mono
+			2 - Estereo
+		*/
+		PutValue("Audio Settings", "Audio Channels", "2");
+		PutValue("Audio Settings", "Audio Buffers", "4096"); // Valor recomendado
+
+		PutBlankLine();
+
 		PutSection("Other Settings");
 		PutValue("Other Settings", "Application Name", "RiseOfViwx");
 		PutValue("Other Settings", "Version", "0.01");

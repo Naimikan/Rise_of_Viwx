@@ -55,9 +55,9 @@ bool Application::OnInit() throw(GenericException) {
 
 	SettingsCreator::ConfigureSettingsFile();
 	
-	std::map<std::string, std::string> resultPair = SettingsCreator::GetSettingsBySection("Resolution");
+	std::map<std::string, std::string> resolutionSection = SettingsCreator::GetSettingsBySection("Resolution");
 
-	for (std::map<std::string, std::string>::iterator mapIterator = resultPair.begin(); mapIterator != resultPair.end(); ++mapIterator) {
+	for (std::map<std::string, std::string>::iterator mapIterator = resolutionSection.begin(); mapIterator != resolutionSection.end(); ++mapIterator) {
 		std::pair<std::string, std::string> pairItem = (*mapIterator);
 
 		if (pairItem.first == "Width") {
@@ -84,12 +84,12 @@ bool Application::OnInit() throw(GenericException) {
 	std::string applicationName, version;
 	applicationName = version = "";
 
-	std::map<std::string, std::string> otherPair = SettingsCreator::GetSettingsBySection("Other Settings");
+	std::map<std::string, std::string> otherSection = SettingsCreator::GetSettingsBySection("Other Settings");
 
-	for (std::map<std::string, std::string>::iterator mapIterator = otherPair.begin(); mapIterator != otherPair.end(); ++mapIterator) {
+	for (std::map<std::string, std::string>::iterator mapIterator = otherSection.begin(); mapIterator != otherSection.end(); ++mapIterator) {
 		std::pair<std::string, std::string> pairItem = (*mapIterator);
 
-		if  (pairItem.first == "Application Name") {
+		if (pairItem.first == "Application Name") {
 			applicationName = pairItem.second;
 		} else if (pairItem.first == "Version") {
 			version = pairItem.second;
@@ -105,11 +105,45 @@ bool Application::OnInit() throw(GenericException) {
 	SDL_WM_SetCaption(caption.c_str(), NULL);
 
 	// Initialize SDL_ttf
-	if(TTF_Init() == -1) {
+	if (TTF_Init() == -1) {
 		throw TTFException();
 	}
 
-	ResourcesManager::AddAllFontsByPath("./Media/Fonts");
+	std::string fontsPath, soundsPath, musicsPath, imagesPath;
+	fontsPath = soundsPath = musicsPath = imagesPath = "";
+
+	std::map<std::string, std::string> mediaRoutesSection = SettingsCreator::GetSettingsBySection("Media Routes");
+
+	for (std::map<std::string, std::string>::iterator mapIterator = mediaRoutesSection.begin(); mapIterator != mediaRoutesSection.end(); ++mapIterator) {
+		std::pair<std::string, std::string> pairItem = (*mapIterator);
+
+		if (pairItem.first == "Fonts") {
+			fontsPath = pairItem.second;
+		} else if (pairItem.first == "Musics") {
+			musicsPath = pairItem.second;
+		} else if (pairItem.first == "Sounds") {
+			soundsPath = pairItem.second;
+		} else if (pairItem.first == "Images") {
+			imagesPath = pairItem.second;
+		}
+	}
+
+	
+
+	std::map<std::string, std::string> audioSettingsSection = SettingsCreator::GetSettingsBySection("Audio Settings");
+
+	for (std::map<std::string, std::string>::iterator mapIterator = audioSettingsSection.begin(); mapIterator != audioSettingsSection.end(); ++mapIterator) {
+		std::pair<std::string, std::string> pairItem = (*mapIterator);
+
+
+	}
+
+	// Initialize SDL_mixer
+	/*if () {
+
+	}*/
+
+	ResourcesManager::OnInit(fontsPath.c_str(), soundsPath.c_str(), musicsPath.c_str(), imagesPath.c_str());
 
 	return true;
 }
@@ -156,14 +190,14 @@ void Application::OnEvent(SDL_Event* parEvent) {
 }
 
 void Application::OnCleanUp() {
-	ResourcesManager::DeleteFonts();
-
+	ResourcesManager::OnCleanUp();
 	SettingsCreator::OnCleanUp();
 
 	SDL_FreeSurface(screen);
 
-	TTF_Quit();
-	SDL_Quit();
+	//Mix_CloseAudio(); // Close SDL_mixer
+	TTF_Quit(); // Close SDL_ttf
+	SDL_Quit(); // Close SDL
 }
 
 void Application::OnKeyDown(SDLKey parSym, SDLMod parMod, Uint16 parUnicode) {
