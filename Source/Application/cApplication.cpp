@@ -34,6 +34,14 @@ int Application::OnExecute() {
 
 		Logger::WriteMessageInLogFile(finalMessage.c_str());
 		return -1;
+	} catch (const MixerException& mixerException) {
+		std::string finalMessage;
+		finalMessage.append("<Mixer Error>");
+		finalMessage.append(" => ");
+		finalMessage.append(mixerException.WhatHappens());
+
+		Logger::WriteMessageInLogFile(finalMessage.c_str());
+		return -1;
 	} catch (const GenericException& exception) {
 		Logger::WriteMessageInLogFile(exception.WhatHappens());
 		return -1;
@@ -43,131 +51,13 @@ int Application::OnExecute() {
 }
 
 bool Application::OnInit() throw(GenericException) {
-	int windowWidth, windowHeight, windowBPP, windowFullScreen;
-	windowWidth = windowHeight = windowBPP = windowFullScreen = 0;
-
-	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-		throw SDLException();
-	}
-
-	SDL_EnableKeyRepeat(1, SDL_DEFAULT_REPEAT_INTERVAL / 3);
-
 	SettingsCreator::ConfigureSettingsFile();
-	
-	std::map<std::string, std::string> resolutionSection = SettingsCreator::GetSettingsBySection("Resolution");
 
-	for (std::map<std::string, std::string>::iterator mapIterator = resolutionSection.begin(); mapIterator != resolutionSection.end(); ++mapIterator) {
-		std::pair<std::string, std::string> pairItem = (*mapIterator);
-
-		if (pairItem.first == "Width") {
-			windowWidth = atoi(pairItem.second.c_str());
-		} else if (pairItem.first == "Height") {
-			windowHeight = atoi(pairItem.second.c_str());
-		} else if (pairItem.first == "BPP") {
-			windowBPP = atoi(pairItem.second.c_str());
-		} else if (pairItem.first == "FullScreen") {
-			windowFullScreen = atoi(pairItem.second.c_str());
-		}
-	}
-
-	Uint32 flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
-
-	if (windowFullScreen == 1) {
-		flags = flags | SDL_FULLSCREEN;
-	}
-
-	if ((screen = SDL_SetVideoMode(windowWidth, windowHeight, windowBPP, flags)) == NULL) {
-		throw SDLException();
-	}
-
-	std::string applicationName, version;
-	applicationName = version = "";
-
-	std::map<std::string, std::string> otherSection = SettingsCreator::GetSettingsBySection("Other Settings");
-
-	for (std::map<std::string, std::string>::iterator mapIterator = otherSection.begin(); mapIterator != otherSection.end(); ++mapIterator) {
-		std::pair<std::string, std::string> pairItem = (*mapIterator);
-
-		if (pairItem.first == "Application Name") {
-			applicationName = pairItem.second;
-		} else if (pairItem.first == "Version") {
-			version = pairItem.second;
-		}
-	}
-
-	// Set the window caption
-	std::string caption;
-	caption.append(applicationName);
-	caption.append(" v. ");
-	caption.append(version);
-
-	SDL_WM_SetCaption(caption.c_str(), NULL);
-
-	// Initialize SDL_ttf
-	if (TTF_Init() == -1) {
-		throw TTFException();
-	}
-
-	std::string fontsPath, soundsPath, musicsPath, imagesPath;
-	fontsPath = soundsPath = musicsPath = imagesPath = "";
-
-	std::map<std::string, std::string> mediaRoutesSection = SettingsCreator::GetSettingsBySection("Media Routes");
-
-	for (std::map<std::string, std::string>::iterator mapIterator = mediaRoutesSection.begin(); mapIterator != mediaRoutesSection.end(); ++mapIterator) {
-		std::pair<std::string, std::string> pairItem = (*mapIterator);
-
-		if (pairItem.first == "Fonts") {
-			fontsPath = pairItem.second;
-		} else if (pairItem.first == "Musics") {
-			musicsPath = pairItem.second;
-		} else if (pairItem.first == "Sounds") {
-			soundsPath = pairItem.second;
-		} else if (pairItem.first == "Images") {
-			imagesPath = pairItem.second;
-		}
-	}
-
-	int audioRate, audioChannels, audioBuffers;
-	audioRate = audioChannels = audioBuffers = 0;
-	
-	Uint16 audioFormat = 0;
-
-	std::map<std::string, std::string> audioSettingsSection = SettingsCreator::GetSettingsBySection("Audio Settings");
-
-	for (std::map<std::string, std::string>::iterator mapIterator = audioSettingsSection.begin(); mapIterator != audioSettingsSection.end(); ++mapIterator) {
-		std::pair<std::string, std::string> pairItem = (*mapIterator);
-
-		if (pairItem.first == "Audio Rate") {
-			audioRate = atoi(pairItem.second.c_str());
-		} else if (pairItem.first == "Audio Format") {
-			int tempAudioFormat = atoi(pairItem.second.c_str());
-			
-			switch (tempAudioFormat) {
-				case 1: audioFormat = AUDIO_U8; break;
-				case 2: audioFormat = AUDIO_S8; break;
-				case 3: audioFormat = AUDIO_U16LSB; break;
-				case 4: audioFormat = AUDIO_S16LSB; break;
-				case 5: audioFormat = AUDIO_U16MSB; break;
-				case 6: audioFormat = AUDIO_S16MSB; break;
-				case 7: audioFormat = AUDIO_U16; break;
-				case 8: audioFormat = AUDIO_S16; break;
-				case 9: audioFormat = AUDIO_U16SYS; break;
-				case 10: audioFormat = AUDIO_S16SYS; break;
-				case 11: audioFormat = MIX_DEFAULT_FORMAT; break;
-			}
-		} else if (pairItem.first == "Audio Channels") {
-			audioChannels = atoi(pairItem.second.c_str());
-		} else if (pairItem.first == "Audio Buffers") {
-			audioBuffers = atoi(pairItem.second.c_str());
-		}
-	}
-
-	// Initialize SDL_mixer
-	if (Mix_OpenAudio(audioRate, audioFormat, audioChannels, audioBuffers) == -1) {
-		throw MixerException();
-	}
-
-	ResourcesManager::OnInit(fontsPath.c_str(), soundsPath.c_str(), musicsPath.c_str(), imagesPath.c_str());
+	InitializeSDLSystem();
+	InitializeVideoSystem();
+	InitializeTTFSystem();
+	InitializeAudioSystem();
+	InitializeResources();
 
 	return true;
 }
@@ -219,7 +109,7 @@ void Application::OnCleanUp() {
 
 	SDL_FreeSurface(screen);
 
-	//Mix_CloseAudio(); // Close SDL_mixer
+	Mix_CloseAudio(); // Close SDL_mixer
 	TTF_Quit(); // Close SDL_ttf
 	SDL_Quit(); // Close SDL
 }
@@ -232,4 +122,138 @@ void Application::OnKeyDown(SDLKey parSym, SDLMod parMod, Uint16 parUnicode) {
 			
 		default: { }
 	}
+}
+
+void Application::InitializeSDLSystem() {
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+		throw SDLException();
+	}
+
+	SDL_EnableKeyRepeat(1, SDL_DEFAULT_REPEAT_INTERVAL / 3);
+}
+
+void Application::InitializeVideoSystem() {
+	int windowWidth, windowHeight, windowBPP, windowFullScreen;
+	windowWidth = windowHeight = windowBPP = windowFullScreen = 0;
+	
+	std::map<std::string, std::string> resolutionSection = SettingsCreator::GetSettingsBySection("Resolution");
+
+	for (std::map<std::string, std::string>::iterator mapIterator = resolutionSection.begin(); mapIterator != resolutionSection.end(); ++mapIterator) {
+		std::pair<std::string, std::string> pairItem = (*mapIterator);
+
+		if (pairItem.first == "Width") {
+			windowWidth = atoi(pairItem.second.c_str());
+		} else if (pairItem.first == "Height") {
+			windowHeight = atoi(pairItem.second.c_str());
+		} else if (pairItem.first == "BPP") {
+			windowBPP = atoi(pairItem.second.c_str());
+		} else if (pairItem.first == "FullScreen") {
+			windowFullScreen = atoi(pairItem.second.c_str());
+		}
+	}
+
+	Uint32 flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
+
+	if (windowFullScreen == 1) {
+		flags = flags | SDL_FULLSCREEN;
+	}
+
+	if ((screen = SDL_SetVideoMode(windowWidth, windowHeight, windowBPP, flags)) == NULL) {
+		throw SDLException();
+	}
+
+	std::string applicationName, version;
+	applicationName = version = "";
+
+	std::map<std::string, std::string> otherSection = SettingsCreator::GetSettingsBySection("Other Settings");
+
+	for (std::map<std::string, std::string>::iterator mapIterator = otherSection.begin(); mapIterator != otherSection.end(); ++mapIterator) {
+		std::pair<std::string, std::string> pairItem = (*mapIterator);
+
+		if (pairItem.first == "Application Name") {
+			applicationName = pairItem.second;
+		} else if (pairItem.first == "Version") {
+			version = pairItem.second;
+		}
+	}
+
+	// Set the window caption
+	std::string caption;
+	caption.append(applicationName);
+	caption.append(" v. ");
+	caption.append(version);
+
+	SDL_WM_SetCaption(caption.c_str(), NULL);
+}
+
+void Application::InitializeAudioSystem() {
+	int audioRate, audioChannels, audioBuffers;
+	audioRate = audioChannels = audioBuffers = 0;
+	
+	Uint16 audioFormat = 0;
+
+	std::map<std::string, std::string> audioSettingsSection = SettingsCreator::GetSettingsBySection("Audio Settings");
+
+	for (std::map<std::string, std::string>::iterator mapIterator = audioSettingsSection.begin(); mapIterator != audioSettingsSection.end(); ++mapIterator) {
+		std::pair<std::string, std::string> pairItem = (*mapIterator);
+
+		if (pairItem.first == "Audio Rate") {
+			audioRate = atoi(pairItem.second.c_str());
+		} else if (pairItem.first == "Audio Format") {
+			int tempAudioFormat = atoi(pairItem.second.c_str());
+			
+			switch (tempAudioFormat) {
+				case 1: audioFormat = AUDIO_U8; break;
+				case 2: audioFormat = AUDIO_S8; break;
+				case 3: audioFormat = AUDIO_U16LSB; break;
+				case 4: audioFormat = AUDIO_S16LSB; break;
+				case 5: audioFormat = AUDIO_U16MSB; break;
+				case 6: audioFormat = AUDIO_S16MSB; break;
+				case 7: audioFormat = AUDIO_U16; break;
+				case 8: audioFormat = AUDIO_S16; break;
+				case 9: audioFormat = AUDIO_U16SYS; break;
+				case 10: audioFormat = AUDIO_S16SYS; break;
+				case 11: audioFormat = MIX_DEFAULT_FORMAT; break;
+			}
+		} else if (pairItem.first == "Audio Channels") {
+			audioChannels = atoi(pairItem.second.c_str());
+		} else if (pairItem.first == "Audio Buffers") {
+			audioBuffers = atoi(pairItem.second.c_str());
+		}
+	}
+
+	// Initialize SDL_mixer
+	if (Mix_OpenAudio(audioRate, audioFormat, audioChannels, audioBuffers) == -1) {
+		throw MixerException();
+	}
+}
+
+void Application::InitializeTTFSystem() {
+	// Initialize SDL_ttf
+	if (TTF_Init() == -1) {
+		throw TTFException();
+	}
+}
+
+void Application::InitializeResources() {
+	std::string fontsPath, soundsPath, musicsPath, imagesPath;
+	fontsPath = soundsPath = musicsPath = imagesPath = "";
+
+	std::map<std::string, std::string> mediaRoutesSection = SettingsCreator::GetSettingsBySection("Media Routes");
+
+	for (std::map<std::string, std::string>::iterator mapIterator = mediaRoutesSection.begin(); mapIterator != mediaRoutesSection.end(); ++mapIterator) {
+		std::pair<std::string, std::string> pairItem = (*mapIterator);
+
+		if (pairItem.first == "Fonts") {
+			fontsPath = pairItem.second;
+		} else if (pairItem.first == "Musics") {
+			musicsPath = pairItem.second;
+		} else if (pairItem.first == "Sounds") {
+			soundsPath = pairItem.second;
+		} else if (pairItem.first == "Images") {
+			imagesPath = pairItem.second;
+		}
+	}
+
+	ResourcesManager::OnInit(fontsPath.c_str(), soundsPath.c_str(), musicsPath.c_str(), imagesPath.c_str());
 }

@@ -26,6 +26,13 @@ class Application : public Event {
 		
 		SDL_Event eventHandled;
 		SDL_Surface* screen;
+
+		void InitializeSDLSystem();
+		void InitializeVideoSystem();
+		void InitializeTTFSystem();
+		void InitializeAudioSystem();
+		void InitializeResources();
+
 };
 
 #endif // End _CAPPLICATION_HPP_
