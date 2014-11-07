@@ -5,7 +5,8 @@
 
 #include "../Core/Event/cEvent.hpp"
 #include "../Core/SettingsCreator/cSettingsCreator.hpp"
-#include "../Core/ResourcesManager/cResourcesManager.hpp"
+
+#include "../Core/ResourcesManager/Font/cFontManager.hpp"
 
 class Application : public Event {
 	public:
@@ -26,6 +27,8 @@ class Application : public Event {
 		
 		SDL_Event eventHandled;
 		SDL_Surface* screen;
+
+		FontManager* fontManager;
 
 		void InitializeSDLSystem();
 		void InitializeVideoSystem();

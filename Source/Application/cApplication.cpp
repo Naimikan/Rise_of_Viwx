@@ -75,7 +75,7 @@ void Application::OnRender() {
 
 	SDL_Color textColor = { 255, 255, 255 };
 
-	Font* lazyFont = ResourcesManager::GetFont(ResourcesManager::Lazy);
+	Font* lazyFont = fontManager->GetFont(FontManager::Lazy);
 	lazyFont->SetStyle(TTF_STYLE_UNDERLINE);
 	lazyFont->SetOutline(TTF_STYLE_BOLD);
 	lazyFont->SetHinting(TTF_HINTING_NONE);
@@ -104,7 +104,8 @@ void Application::OnEvent(SDL_Event* parEvent) {
 }
 
 void Application::OnCleanUp() {
-	ResourcesManager::OnCleanUp();
+	delete fontManager;
+
 	SettingsCreator::OnCleanUp();
 
 	SDL_FreeSurface(screen);
@@ -255,5 +256,10 @@ void Application::InitializeResources() {
 		}
 	}
 
-	ResourcesManager::OnInit(fontsPath.c_str(), soundsPath.c_str(), musicsPath.c_str(), imagesPath.c_str());
+	// Create Managers
+	fontManager = FontManager::Initialize(fontsPath.c_str());
+
+
+
+	//ResourcesManager::OnInit(fontsPath.c_str(), soundsPath.c_str(), musicsPath.c_str(), imagesPath.c_str());
 }
