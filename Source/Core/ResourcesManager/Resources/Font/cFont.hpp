@@ -1,7 +1,7 @@
 #ifndef _CFONT_HPP_
 #define _CFONT_HPP_
 
-#include "../../iGlobals.hpp"
+#include "../../../iGlobals.hpp"
 
 class Font {
 	public:

@@ -1,13 +1,12 @@
 #ifndef _CFONTMANAGER_HPP_
 #define _CFONTMANAGER_HPP_
 
-#include "cFont.hpp"
-#include "../cResourcesManager.hpp"
+#include "../../cResourcesManager.hpp"
 
 class FontManager {
 	public:
 		static FontManager* Initialize(const char* parFontPath);
-		virtual ~FontManager();
+		~FontManager();
 
 		Font* GetFont(std::string parFontName) throw(TTFException);
 		void DeleteFonts();

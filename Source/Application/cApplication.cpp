@@ -1,6 +1,6 @@
 #include "cApplication.hpp"
 
-Application::Application() : isRunning(true), screen(NULL) {
+Application::Application() : isRunning(true), screen(NULL), fontManager(NULL) {
 
 }
 
@@ -258,8 +258,6 @@ void Application::InitializeResources() {
 
 	// Create Managers
 	fontManager = FontManager::Initialize(fontsPath.c_str());
-
-
 
 	//ResourcesManager::OnInit(fontsPath.c_str(), soundsPath.c_str(), musicsPath.c_str(), imagesPath.c_str());
 }

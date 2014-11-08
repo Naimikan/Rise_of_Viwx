@@ -19,7 +19,8 @@ TTFEXCEPTIONDIR := $(SRCCOREDIR)/Exception/TTFException
 MIXEREXCEPTIONDIR := $(SRCCOREDIR)/Exception/MixerException
 EVENTDIR := $(SRCCOREDIR)/Event
 RESOURCESMANAGERDIR := $(SRCCOREDIR)/ResourcesManager
-FONTDIR := $(RESOURCESMANAGERDIR)/Font
+FONTMANAGERDIR := $(RESOURCESMANAGERDIR)/Managers/FontManager
+FONTDIR := $(RESOURCESMANAGERDIR)/Resources/Font
 
 .PHONY: all
 all: core application main createExecutable
@@ -36,9 +37,11 @@ logger: $(OBJDIR)/Logger.o
 
 settings: $(OBJDIR)/SettingsCreator.o
 
-resourcesmanager: font $(OBJDIR)/ResourcesManager.o
+resourcesmanager: font $(OBJDIR)/ResourcesManager.o fontmanager
 
 font: $(OBJDIR)/Font.o
+
+fontmanager: $(OBJDIR)/FontManager.o
 
 event: $(OBJDIR)/Event.o
 
@@ -102,6 +105,10 @@ $(OBJDIR)/ResourcesManager.o: $(RESOURCESMANAGERDIR)/*.cpp
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(OBJDIR)/Font.o: $(FONTDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+	
+$(OBJDIR)/FontManager.o: $(FONTMANAGERDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 

@@ -34,8 +34,7 @@ std::map<std::string, Font*> ResourcesManager::InitializeAllFontsByPath(const ch
 			}*/
 
 			Font* newFont = CreateFont(fontName, fullName.c_str());
-			fontsList.insert(std::pair<std::string, Font*>(parFontName, newFont));
-			delete newFont;
+			fontsList.insert(std::pair<std::string, Font*>(fontName, newFont));
 		}
 	}
 

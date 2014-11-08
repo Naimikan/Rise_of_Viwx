@@ -3,7 +3,7 @@
 
 #include "../iGlobals.hpp"
 
-#include "Font/cFont.hpp"
+#include "Resources/Font/cFont.hpp"
 
 class ResourcesManager {
 	public:

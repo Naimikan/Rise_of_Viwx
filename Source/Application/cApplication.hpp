@@ -6,7 +6,7 @@
 #include "../Core/Event/cEvent.hpp"
 #include "../Core/SettingsCreator/cSettingsCreator.hpp"
 
-#include "../Core/ResourcesManager/Font/cFontManager.hpp"
+#include "../Core/ResourcesManager/Managers/FontManager/cFontManager.hpp"
 
 class Application : public Event {
 	public:

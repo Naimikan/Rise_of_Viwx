@@ -5,7 +5,7 @@ std::string FontManager::Lazy = "lazy.ttf";
 
 FontManager* FontManager::Initialize(const char* parFontPath) {
 	if (instance == NULL) {
-		instance = new FontManager();
+		instance = new FontManager(parFontPath);
 	}
 
 	return instance;
@@ -16,10 +16,7 @@ FontManager::FontManager(const char* parFontPath) {
 }
 
 FontManager::~FontManager() {
-	if (instance != NULL) {
-		DeleteFonts();
-		delete instance;
-	}
+	DeleteFonts();
 }
 
 Font* FontManager::GetFont(std::string parFontName) throw(TTFException) {
