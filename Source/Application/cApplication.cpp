@@ -117,11 +117,8 @@ void Application::OnCleanUp() {
 
 void Application::OnKeyDown(SDLKey parSym, SDLMod parMod, Uint16 parUnicode) {
 	switch(parSym) {
-		case SDLK_ESCAPE: 
-			OnExit();
-			break;
-			
-		default: { }
+		case SDLK_ESCAPE: OnExit(); break;
+		default: break;
 	}
 }
 
@@ -258,6 +255,4 @@ void Application::InitializeResources() {
 
 	// Create Managers
 	fontManager = FontManager::Initialize(fontsPath.c_str());
-
-	//ResourcesManager::OnInit(fontsPath.c_str(), soundsPath.c_str(), musicsPath.c_str(), imagesPath.c_str());
 }
