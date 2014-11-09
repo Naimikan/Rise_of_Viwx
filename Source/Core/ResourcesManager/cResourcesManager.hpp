@@ -10,7 +10,9 @@ class ResourcesManager {
 		// Fonts
 		// Por defecto, el tamaño de la fuente será de 16
 		static Font* CreateFont(std::string parFontName, const char* parFontPath, int parFontSize = 16);
-		static std::map<std::string, Font*> InitializeAllFontsByPath(const char* parFontPath);
+		static Font* GetFont(std::string parFontName) throw(TTFException);
+		static void DeleteFonts();
+		static void InitializeAllFontsByPath(const char* parFontPath);
 
 		// Sounds
 
@@ -23,6 +25,8 @@ class ResourcesManager {
 			File = 0x8
 			, Folder = 0x4
 		};
+		
+		static std::map<std::string, Font*> fontsList;
 };
 
 #endif // End _CRESOURCESMANAGER_HPP_

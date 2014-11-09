@@ -1,5 +1,7 @@
 #include "cResourcesManager.hpp"
 
+std::map<std::string, Font*> ResourcesManager::fontsList;
+
 Font* ResourcesManager::CreateFont(std::string parFontName, const char* parFontPath, int parFontSize) {
 	Font* newFont = new Font(parFontName, parFontPath, parFontSize);
 
@@ -10,9 +12,33 @@ Font* ResourcesManager::CreateFont(std::string parFontName, const char* parFontP
 	return newFont;
 }
 
-std::map<std::string, Font*> ResourcesManager::InitializeAllFontsByPath(const char* parFontPath) {
-	std::map<std::string, Font*> fontsList;
+Font* ResourcesManager::GetFont(std::string parFontName) throw(TTFException) {
+	if (parFontName.empty()) {
+		throw TTFException("FontName required.");
+	}
 
+	if (fontsList.empty()) {
+		throw TTFException("Fonts list empty.");
+	}
+
+	std::map<std::string, Font*>::const_iterator iteratorFontFound = fontsList.find(parFontName);
+
+	if (iteratorFontFound != fontsList.end()) {
+		return iteratorFontFound->second;
+	} else {
+		throw TTFException("Font not found.");
+	}
+}
+
+void ResourcesManager::DeleteFonts() {
+	for (std::map<std::string, Font*>::iterator mapIterator = fontsList.begin(); mapIterator != fontsList.end(); ++mapIterator) {
+		delete (*mapIterator).second;
+	}
+
+	fontsList.clear();
+}
+
+void ResourcesManager::InitializeAllFontsByPath(const char* parFontPath) {
 	DIR* directory;
 	struct dirent *direntPointer;
 	std::string fontName;
@@ -39,6 +65,4 @@ std::map<std::string, Font*> ResourcesManager::InitializeAllFontsByPath(const ch
 	}
 
 	closedir(directory);
-
-	return fontsList;
 }
