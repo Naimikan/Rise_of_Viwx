@@ -1,12 +1,12 @@
-#ifndef _CEVENT_HPP_
-#define _CEVENT_HPP_
+#ifndef _CEVENTLISTENER_HPP_
+#define _CEVENTLISTENER_HPP_
 
 #include "../iGlobals.hpp"
 
-class Event {
+class EventListener {
 	public:
-		Event();
-		virtual ~Event();
+		EventListener();
+		virtual ~EventListener();
 
 		virtual void OnEvent(SDL_Event* parEvent);
 
@@ -41,4 +41,4 @@ class Event {
 		virtual void OnUser(Uint8 type, int code, void* data1, void* data2);
 };
 
-#endif // End _CEVENT_HPP_
+#endif // End _CEVENTLISTENER_HPP_

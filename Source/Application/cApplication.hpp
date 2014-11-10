@@ -3,12 +3,12 @@
 
 #include "../Core/iGlobals.hpp"
 
-#include "../Core/Event/cEvent.hpp"
+#include "../Core/EventListener/cEventListener.hpp"
 #include "../Core/SettingsCreator/cSettingsCreator.hpp"
 
 #include "../Core/ResourcesManager/Managers/FontManager/cFontManager.hpp"
 
-class Application : public Event {
+class Application : public EventListener {
 	public:
 		Application();
 		

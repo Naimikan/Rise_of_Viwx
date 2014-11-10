@@ -100,7 +100,7 @@ void Application::OnExit() {
 }
 
 void Application::OnEvent(SDL_Event* parEvent) {
-	Event::OnEvent(parEvent);
+	EventListener::OnEvent(parEvent);
 }
 
 void Application::OnCleanUp() {
