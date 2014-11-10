@@ -9,7 +9,7 @@ EventListener::~EventListener() {
 }
 
 void EventListener::OnEvent(SDL_Event* parEvent) {
-    switch(parEvent->type) {
+    switch (parEvent->type) {
         case SDL_ACTIVEEVENT: {
             switch(parEvent->active.state) {
                 case SDL_APPMOUSEFOCUS: {
