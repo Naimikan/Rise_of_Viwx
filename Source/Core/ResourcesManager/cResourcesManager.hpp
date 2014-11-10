@@ -4,6 +4,7 @@
 #include "../iGlobals.hpp"
 
 #include "Resources/Font/cFont.hpp"
+#include "Resources/Image/cImage.hpp"
 
 class ResourcesManager {
 	public:
@@ -19,6 +20,10 @@ class ResourcesManager {
 		// Musics
 
 		// Images
+		static Image* CreateImage(std::string parImageName, const char* parImagePath);
+		static Image* GetImage(std::string parImageName) throw(GenericException);
+		static void DeleteImages();
+		static void InitializeAllImagesByPath(const char* parImagePath);
 
 	private:
 		enum Types {
@@ -27,6 +32,7 @@ class ResourcesManager {
 		};
 		
 		static std::map<std::string, Font*> fontsList;
+		static std::map<std::string, Image*> imagesList;
 };
 
 #endif // End _CRESOURCESMANAGER_HPP_

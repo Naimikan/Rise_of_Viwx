@@ -5,13 +5,14 @@
 
 class Image {
 	public:
-		Image(std::string parPath) throw(GenericException);
+		Image(std::string parName, std::string parPath) throw(GenericException);
 		~Image();
 
 		std::string GetPath() { return imagePath; }
 		SDL_Surface* GetSDL_Surface() { return image; }
 
 	private:
+		std::string imageName;
 		std::string imagePath;
 		SDL_Surface* image;
 };

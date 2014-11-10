@@ -7,6 +7,7 @@
 #include "../Core/SettingsCreator/cSettingsCreator.hpp"
 
 #include "../Core/ResourcesManager/Managers/FontManager/cFontManager.hpp"
+#include "../Core/ResourcesManager/Managers/ImageManager/cImageManager.hpp"
 
 class Application : public EventListener {
 	public:
@@ -29,6 +30,7 @@ class Application : public EventListener {
 		SDL_Surface* screen;
 
 		FontManager* fontManager;
+		ImageManager* imageManager;
 
 		void InitializeSDLSystem();
 		void InitializeVideoSystem();

@@ -1,6 +1,6 @@
 #include "cApplication.hpp"
 
-Application::Application() : isRunning(true), screen(NULL), fontManager(NULL) {
+Application::Application() : isRunning(true), screen(NULL), fontManager(NULL), imageManager(NULL) {
 
 }
 
@@ -105,6 +105,7 @@ void Application::OnEvent(SDL_Event* parEvent) {
 
 void Application::OnCleanUp() {
 	delete fontManager;
+	delete imageManager;
 
 	SettingsCreator::OnCleanUp();
 
@@ -255,4 +256,5 @@ void Application::InitializeResources() {
 
 	// Create Managers
 	fontManager = FontManager::Initialize(fontsPath.c_str());
+	imageManager = ImageManager::Initialize(imagesPath.c_str());
 }

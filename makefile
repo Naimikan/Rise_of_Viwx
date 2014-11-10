@@ -17,17 +17,19 @@ GENERICEXCEPTIONDIR := $(SRCCOREDIR)/Exception
 SDLEXCEPTIONDIR := $(SRCCOREDIR)/Exception/SDLException
 TTFEXCEPTIONDIR := $(SRCCOREDIR)/Exception/TTFException
 MIXEREXCEPTIONDIR := $(SRCCOREDIR)/Exception/MixerException
-EVENTDIR := $(SRCCOREDIR)/Event
+EVENTLISTENERDIR := $(SRCCOREDIR)/EventListener
 RESOURCESMANAGERDIR := $(SRCCOREDIR)/ResourcesManager
 FONTMANAGERDIR := $(RESOURCESMANAGERDIR)/Managers/FontManager
+IMAGEMANAGERDIR := $(RESOURCESMANAGERDIR)/Managers/ImageManager
 FONTDIR := $(RESOURCESMANAGERDIR)/Resources/Font
+IMAGEDIR := $(RESOURCESMANAGERDIR)/Resources/Image
 
 .PHONY: all
 all: core application main createExecutable
 
 application: $(OBJDIR)/Application.o
 
-core: utils logger exceptions settings event resourcesmanager
+core: utils logger exceptions settings eventlistener resourcesmanager
 
 exceptions: genericexception sdlexception ttfexception mixerexception
 
@@ -37,13 +39,17 @@ logger: $(OBJDIR)/Logger.o
 
 settings: $(OBJDIR)/SettingsCreator.o
 
-resourcesmanager: font $(OBJDIR)/ResourcesManager.o fontmanager
+resourcesmanager: font image $(OBJDIR)/ResourcesManager.o fontmanager imagemanager
 
 font: $(OBJDIR)/Font.o
 
+image: $(OBJDIR)/Image.o
+
 fontmanager: $(OBJDIR)/FontManager.o
 
-event: $(OBJDIR)/Event.o
+imagemanager: $(OBJDIR)/ImageManager.o
+
+eventlistener: $(OBJDIR)/EventListener.o
 
 genericexception: $(OBJDIR)/GenericException.o
 
@@ -96,7 +102,7 @@ $(OBJDIR)/MixerException.o: $(MIXEREXCEPTIONDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 	
-$(OBJDIR)/Event.o: $(EVENTDIR)/*.cpp
+$(OBJDIR)/EventListener.o: $(EVENTLISTENERDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
@@ -108,7 +114,15 @@ $(OBJDIR)/Font.o: $(FONTDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 	
+$(OBJDIR)/Image.o: $(IMAGEDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+	
 $(OBJDIR)/FontManager.o: $(FONTMANAGERDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+	
+$(OBJDIR)/ImageManager.o: $(IMAGEMANAGERDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
