@@ -8,7 +8,7 @@ class SoundManager {
 		static SoundManager* Initialize(const char* parSoundPath);
 		~SoundManager();
 
-		Sound* GetSound(std::string parSoundPath) throw(GenericException);
+		Sound* GetSound(std::string parSoundPath);
 
 	protected:
 		SoundManager(const char* parSoundPath);

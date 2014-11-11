@@ -5,7 +5,7 @@
 
 class Image {
 	public:
-		Image(std::string parName, std::string parPath) throw(GenericException);
+		Image(std::string parName, std::string parPath);
 		~Image();
 
 		std::string GetPath() { return imagePath; }

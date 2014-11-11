@@ -15,7 +15,7 @@ class Application : public EventListener {
 		Application();
 		
 		int OnExecute();
-		bool OnInit() throw (GenericException);
+		bool OnInit();
 		void OnEvent(SDL_Event* parEvent);
 		void OnRender();
 		void OnLoop();

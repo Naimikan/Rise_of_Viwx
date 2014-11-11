@@ -14,7 +14,7 @@ Font* ResourcesManager::CreateFont(std::string parFontName, const char* parFontP
 	return newFont;
 }
 
-Font* ResourcesManager::GetFont(std::string parFontName) throw(TTFException) {
+Font* ResourcesManager::GetFont(std::string parFontName) {
 	if (parFontName.empty()) {
 		throw TTFException("FontName required.");
 	}
@@ -79,7 +79,7 @@ Image* ResourcesManager::CreateImage(std::string parImageName, const char* parIm
 	return newImage;
 }
 
-Image* ResourcesManager::GetImage(std::string parImageName) throw(GenericException) {
+Image* ResourcesManager::GetImage(std::string parImageName) {
 	if (parImageName.empty()) {
 		throw GenericException("ImageName required.");
 	}
@@ -140,7 +140,7 @@ Sound* ResourcesManager::CreateSound(std::string parSoundName, const char* parSo
 	return newSound;
 }
 
-Sound* ResourcesManager::GetSound(std::string parSoundName) throw(MixerException) {
+Sound* ResourcesManager::GetSound(std::string parSoundName) {
 	if (parSoundName.empty()) {
 		throw MixerException("SoundName required.");
 	}

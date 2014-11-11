@@ -18,7 +18,7 @@ SoundManager::~SoundManager() {
 	ResourcesManager::DeleteSounds();
 }
 
-Sound* SoundManager::GetSound(std::string parSoundName) throw(GenericException) {
+Sound* SoundManager::GetSound(std::string parSoundName) {
 	Sound* foundSound = ResourcesManager::GetSound(parSoundName);
 	return foundSound;
 }

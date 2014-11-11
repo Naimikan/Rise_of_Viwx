@@ -50,16 +50,28 @@ int Application::OnExecute() {
 	return 0;
 }
 
-bool Application::OnInit() throw(GenericException) {
-	SettingsCreator::ConfigureSettingsFile();
+bool Application::OnInit() {
+	try {
+		SettingsCreator::ConfigureSettingsFile();
 
-	InitializeSDLSystem();
-	InitializeVideoSystem();
-	InitializeTTFSystem();
-	InitializeAudioSystem();
-	InitializeResources();
+		InitializeSDLSystem();
+		InitializeVideoSystem();
+		InitializeTTFSystem();
+		InitializeAudioSystem();
+		InitializeResources();
 
-	return true;
+		return true;
+	} catch (const SDLException& sdlException) {
+		throw sdlException;
+	} catch (const TTFException& ttfException) {
+		throw ttfException;
+	} catch (const MixerException& mixerException) {
+		throw mixerException;
+	} catch (const GenericException& exception) {
+		throw exception;
+	}
+
+	return false;
 }
 
 void Application::OnLoop() {

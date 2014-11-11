@@ -8,7 +8,7 @@ class ImageManager {
 		static ImageManager* Initialize(const char* parImagePath);
 		~ImageManager();
 
-		Image* GetImage(std::string parImageName) throw(GenericException);
+		Image* GetImage(std::string parImageName);
 
 	protected:
 		ImageManager(const char* parImagePath);

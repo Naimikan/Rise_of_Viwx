@@ -8,7 +8,7 @@ class FontManager {
 		static FontManager* Initialize(const char* parFontPath);
 		~FontManager();
 
-		Font* GetFont(std::string parFontName) throw(TTFException);
+		Font* GetFont(std::string parFontName);
 
 		static std::string Lazy;
 

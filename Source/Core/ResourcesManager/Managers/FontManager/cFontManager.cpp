@@ -19,7 +19,7 @@ FontManager::~FontManager() {
 	ResourcesManager::DeleteFonts();
 }
 
-Font* FontManager::GetFont(std::string parFontName) throw(TTFException) {
+Font* FontManager::GetFont(std::string parFontName) {
 	Font* foundFont = ResourcesManager::GetFont(parFontName);
 	return foundFont;
 }

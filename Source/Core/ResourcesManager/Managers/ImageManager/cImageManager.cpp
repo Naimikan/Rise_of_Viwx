@@ -18,7 +18,7 @@ ImageManager::~ImageManager() {
 	ResourcesManager::DeleteImages();
 }
 
-Image* ImageManager::GetImage(std::string parImageName) throw(GenericException) {
+Image* ImageManager::GetImage(std::string parImageName) {
 	Image* foundImage = ResourcesManager::GetImage(parImageName);
 	return foundImage;
 }

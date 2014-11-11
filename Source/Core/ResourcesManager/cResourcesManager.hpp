@@ -12,13 +12,13 @@ class ResourcesManager {
 		// Fonts
 		// Por defecto, el tamaño de la fuente será de 16
 		static Font* CreateFont(std::string parFontName, const char* parFontPath, int parFontSize = 16);
-		static Font* GetFont(std::string parFontName) throw(TTFException);
+		static Font* GetFont(std::string parFontName);
 		static void DeleteFonts();
 		static void InitializeAllFontsByPath(const char* parFontPath);
 
 		// Sounds
 		static Sound* CreateSound(std::string parSoundName, const char* parSoundPath);
-		static Sound* GetSound(std::string parSoundName) throw(MixerException);
+		static Sound* GetSound(std::string parSoundName);
 		static void DeleteSounds();
 		static void InitializeAllSoundsByPath(const char* parSoundPath);
 
@@ -26,7 +26,7 @@ class ResourcesManager {
 
 		// Images
 		static Image* CreateImage(std::string parImageName, const char* parImagePath);
-		static Image* GetImage(std::string parImageName) throw(GenericException);
+		static Image* GetImage(std::string parImageName);
 		static void DeleteImages();
 		static void InitializeAllImagesByPath(const char* parImagePath);
 
