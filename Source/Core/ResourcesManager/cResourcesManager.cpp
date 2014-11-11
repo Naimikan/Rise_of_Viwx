@@ -2,6 +2,7 @@
 
 std::map<std::string, Font*> ResourcesManager::fontsList;
 std::map<std::string, Image*> ResourcesManager::imagesList;
+std::map<std::string, Sound*> ResourcesManager::soundsList;
 
 Font* ResourcesManager::CreateFont(std::string parFontName, const char* parFontPath, int parFontSize) {
 	Font* newFont = new Font(parFontName, parFontPath, parFontSize);
@@ -87,10 +88,10 @@ Image* ResourcesManager::GetImage(std::string parImageName) throw(GenericExcepti
 		throw GenericException("Images list empty.");
 	}
 
-	std::map<std::string, Image*>::const_iterator iteratorFontFound = imagesList.find(parImageName);
+	std::map<std::string, Image*>::const_iterator iteratorImageFound = imagesList.find(parImageName);
 
-	if (iteratorFontFound != imagesList.end()) {
-		return iteratorFontFound->second;
+	if (iteratorImageFound != imagesList.end()) {
+		return iteratorImageFound->second;
 	} else {
 		throw GenericException("Image not found.");
 	}
@@ -123,6 +124,67 @@ void ResourcesManager::InitializeAllImagesByPath(const char* parImagePath) {
 
 			Image* newImage = CreateImage(imageName, fullName.c_str());
 			imagesList.insert(std::pair<std::string, Image*>(imageName, newImage));
+		}
+	}
+
+	closedir(directory);
+}
+
+Sound* ResourcesManager::CreateSound(std::string parSoundName, const char* parSoundPath) {
+	Sound* newSound = new Sound(parSoundName, parSoundPath);
+	
+	if (!newSound->GetMix_Chunk()) {
+		throw MixerException();
+	}
+
+	return newSound;
+}
+
+Sound* ResourcesManager::GetSound(std::string parSoundName) throw(MixerException) {
+	if (parSoundName.empty()) {
+		throw MixerException("SoundName required.");
+	}
+
+	if (soundsList.empty()) {
+		throw MixerException("Sounds list empty.");
+	}
+
+	std::map<std::string, Sound*>::const_iterator iteratorSoundFound = soundsList.find(parSoundName);
+
+	if (iteratorSoundFound != soundsList.end()) {
+		return iteratorSoundFound->second;
+	} else {
+		throw MixerException("Sound not found.");
+	}
+}
+
+void ResourcesManager::DeleteSounds() {
+	for (std::map<std::string, Sound*>::iterator mapIterator = soundsList.begin(); mapIterator != soundsList.end(); ++mapIterator) {
+		delete (*mapIterator).second;
+	}
+
+	soundsList.clear();
+}
+
+void ResourcesManager::InitializeAllSoundsByPath(const char* parSoundPath) {
+	DIR* directory;
+	struct dirent *direntPointer;
+	std::string soundName;
+
+	if((directory = opendir(parSoundPath)) == NULL) {
+		throw GenericException("Error al abrir el directorio.");
+	}
+
+	while ((direntPointer = readdir(directory)) != NULL) {
+		if (direntPointer->d_type == File) {
+			std::string fullName = parSoundPath;
+			fullName.append("/");
+			fullName.append(direntPointer->d_name);
+
+			soundName = direntPointer->d_name;
+
+			Sound* newSound = CreateSound(soundName, fullName.c_str());
+			soundsList.insert(std::pair<std::string, Sound*>(soundName, newSound));
 		}
 	}
 

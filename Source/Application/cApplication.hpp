@@ -8,6 +8,7 @@
 
 #include "../Core/ResourcesManager/Managers/FontManager/cFontManager.hpp"
 #include "../Core/ResourcesManager/Managers/ImageManager/cImageManager.hpp"
+#include "../Core/ResourcesManager/Managers/SoundManager/cSoundManager.hpp"
 
 class Application : public EventListener {
 	public:
@@ -31,6 +32,7 @@ class Application : public EventListener {
 
 		FontManager* fontManager;
 		ImageManager* imageManager;
+		SoundManager* soundManager;
 
 		void InitializeSDLSystem();
 		void InitializeVideoSystem();

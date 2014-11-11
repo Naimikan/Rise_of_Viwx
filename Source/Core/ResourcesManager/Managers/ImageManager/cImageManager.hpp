@@ -5,13 +5,13 @@
 
 class ImageManager {
 	public:
-		static ImageManager* Initialize(const char* parFontPath);
+		static ImageManager* Initialize(const char* parImagePath);
 		~ImageManager();
 
-		Image* GetImage(std::string parFontName) throw(GenericException);
+		Image* GetImage(std::string parImageName) throw(GenericException);
 
 	protected:
-		ImageManager(const char* parFontPath);
+		ImageManager(const char* parImagePath);
 		//ImageManager(const ImageManager &);
 		ImageManager &operator= (const ImageManager &);
 

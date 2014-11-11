@@ -21,8 +21,10 @@ EVENTLISTENERDIR := $(SRCCOREDIR)/EventListener
 RESOURCESMANAGERDIR := $(SRCCOREDIR)/ResourcesManager
 FONTMANAGERDIR := $(RESOURCESMANAGERDIR)/Managers/FontManager
 IMAGEMANAGERDIR := $(RESOURCESMANAGERDIR)/Managers/ImageManager
+SOUNDMANAGERDIR := $(RESOURCESMANAGERDIR)/Managers/SoundManager
 FONTDIR := $(RESOURCESMANAGERDIR)/Resources/Font
 IMAGEDIR := $(RESOURCESMANAGERDIR)/Resources/Image
+SOUNDDIR := $(RESOURCESMANAGERDIR)/Resources/Sound
 
 .PHONY: all
 all: core application main createExecutable
@@ -39,15 +41,19 @@ logger: $(OBJDIR)/Logger.o
 
 settings: $(OBJDIR)/SettingsCreator.o
 
-resourcesmanager: font image $(OBJDIR)/ResourcesManager.o fontmanager imagemanager
+resourcesmanager: font image sound $(OBJDIR)/ResourcesManager.o fontmanager imagemanager soundmanager
 
 font: $(OBJDIR)/Font.o
 
 image: $(OBJDIR)/Image.o
 
+sound: $(OBJDIR)/Sound.o
+
 fontmanager: $(OBJDIR)/FontManager.o
 
 imagemanager: $(OBJDIR)/ImageManager.o
+
+soundmanager: $(OBJDIR)/SoundManager.o
 
 eventlistener: $(OBJDIR)/EventListener.o
 
@@ -117,12 +123,20 @@ $(OBJDIR)/Font.o: $(FONTDIR)/*.cpp
 $(OBJDIR)/Image.o: $(IMAGEDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(OBJDIR)/Sound.o: $(SOUNDDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
 	
 $(OBJDIR)/FontManager.o: $(FONTMANAGERDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 	
 $(OBJDIR)/ImageManager.o: $(IMAGEMANAGERDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(OBJDIR)/SoundManager.o: $(SOUNDMANAGERDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
