@@ -1,7 +1,7 @@
 #include "cMusic.hpp"
 
-Music::Music(std::string parName, std::string parPath) : musicName(parName), musicPath(parPath), music(NULL) {
-	music = Mix_LoadMUS(parPath);
+Music::Music(std::string parName, std::string parPath) : musicName(parName), musicPath(parPath) {
+	music = Mix_LoadMUS(parPath.c_str());
 
 	if (!music) {
 		throw MixerException();

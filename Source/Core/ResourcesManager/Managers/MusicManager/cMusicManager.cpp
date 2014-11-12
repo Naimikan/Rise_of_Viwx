@@ -30,7 +30,7 @@ MusicManager::~MusicManager() {
 	ResourcesManager::DeleteMusics();
 }
 
-Sound* MusicManager::GetMusic(std::string parMusicName) {
+Music* MusicManager::GetMusic(std::string parMusicName) {
 	try {
 		Music* foundMusic = ResourcesManager::GetMusic(parMusicName);
 		return foundMusic;

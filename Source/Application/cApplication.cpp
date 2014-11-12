@@ -8,6 +8,19 @@ int Application::OnExecute() {
 	try {
 		OnInit();
 		
+		soundManager->PlaySound(soundManager->GetSound("high.wav"), -1);
+		soundManager->PlaySound(soundManager->GetSound("low.wav"), -1);
+		soundManager->PlaySound(soundManager->GetSound("medium.wav"), -1);
+		soundManager->PlaySound(soundManager->GetSound("scratch.wav"), -1);
+		soundManager->PlaySound(soundManager->GetSound("high.wav"), -1);
+		soundManager->PlaySound(soundManager->GetSound("low.wav"), -1);
+		soundManager->PlaySound(soundManager->GetSound("medium.wav"), -1);
+		soundManager->PlaySound(soundManager->GetSound("scratch.wav"), -1);
+		soundManager->PlaySound(soundManager->GetSound("high.wav"), -1);
+		soundManager->PlaySound(soundManager->GetSound("low.wav"), -1);
+		soundManager->PlaySound(soundManager->GetSound("medium.wav"), -1);
+		soundManager->PlaySound(soundManager->GetSound("scratch.wav"), -1);
+		
 		while (isRunning) {
 			while (SDL_PollEvent(&eventHandled)) {
 				OnEvent(&eventHandled);
@@ -149,7 +162,22 @@ void Application::OnCleanUp() {
 void Application::OnKeyDown(SDLKey parSym, SDLMod parMod, Uint16 parUnicode) {
 	switch(parSym) {
 		case SDLK_ESCAPE: OnExit(); break;
-		default: break;
+		case SDLK_h:
+			soundManager->PlaySound(soundManager->GetSound("high.wav"));
+			break;
+		case SDLK_j:
+			soundManager->PlaySound(soundManager->GetSound("low.wav"));
+			break;
+		case SDLK_k:
+			soundManager->PlaySound(soundManager->GetSound("medium.wav"));
+			break;
+		case SDLK_l:
+			soundManager->PlaySound(soundManager->GetSound("scratch.wav"));
+			break;
+		case SDLK_m:
+			musicManager->PlayMusic(musicManager->GetMusic("beat.wav"));
+			break;
+		default: { };
 	}
 }
 
@@ -257,6 +285,8 @@ void Application::InitializeAudioSystem() {
 	if (Mix_OpenAudio(audioRate, audioFormat, audioChannels, audioBuffers) == -1) {
 		throw MixerException();
 	}
+	
+	Mix_AllocateChannels(16);
 }
 
 void Application::InitializeTTFSystem() {
