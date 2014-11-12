@@ -4,15 +4,27 @@ FontManager* FontManager::instance = NULL;
 std::string FontManager::Lazy = "lazy.ttf";
 
 FontManager* FontManager::Initialize(const char* parFontPath) {
-	if (instance == NULL) {
-		instance = new FontManager(parFontPath);
-	}
+	try {
+		if (instance == NULL) {
+			instance = new FontManager(parFontPath);
+		}
 
-	return instance;
+		return instance;
+	} catch (const TTFException& ttfException) {
+		throw ttfException;
+	} catch (const GenericException& genericException) {
+		throw genericException;
+	}
 }
 
 FontManager::FontManager(const char* parFontPath) {
-	ResourcesManager::InitializeAllFontsByPath(parFontPath);
+	try {
+		ResourcesManager::InitializeAllFontsByPath(parFontPath);
+	} catch (const TTFException& ttfException) {
+		throw ttfException;
+	} catch (const GenericException& genericException) {
+		throw genericException;
+	}
 }
 
 FontManager::~FontManager() {
@@ -20,6 +32,10 @@ FontManager::~FontManager() {
 }
 
 Font* FontManager::GetFont(std::string parFontName) {
-	Font* foundFont = ResourcesManager::GetFont(parFontName);
-	return foundFont;
+	try {
+		Font* foundFont = ResourcesManager::GetFont(parFontName);
+		return foundFont;
+	} catch (const TTFException& ttfException) {
+		throw ttfException;
+	}
 }

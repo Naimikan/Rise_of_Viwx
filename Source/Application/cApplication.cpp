@@ -1,6 +1,6 @@
 #include "cApplication.hpp"
 
-Application::Application() : isRunning(true), screen(NULL), fontManager(NULL), imageManager(NULL), soundManager(NULL) {
+Application::Application() : isRunning(true), screen(NULL), fontManager(NULL), imageManager(NULL), soundManager(NULL), musicManager(NULL) {
 
 }
 
@@ -79,32 +79,48 @@ void Application::OnLoop() {
 }
 
 void Application::OnRender() {
-	// Increiblemente importante
-	// Limpiar la pantalla de "suciedad"
-	SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0, 0, 0));
+	try {
+		// Increiblemente importante
+		// Limpiar la pantalla de "suciedad"
+		if (SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0, 0, 0)) == -1) {
+			throw SDLException();
+		}
 
-	SDL_Surface *message = NULL;
+		SDL_Surface *message = NULL;
 
-	SDL_Color textColor = { 255, 255, 255 };
+		SDL_Color textColor = { 255, 255, 255 };
 
-	Font* lazyFont = fontManager->GetFont(FontManager::Lazy);
-	lazyFont->SetStyle(TTF_STYLE_UNDERLINE);
-	lazyFont->SetOutline(TTF_STYLE_BOLD);
-	lazyFont->SetHinting(TTF_HINTING_NONE);
-	lazyFont->SetKerning(false);
-	lazyFont->SetSize(26);
+		Font* lazyFont = fontManager->GetFont(FontManager::Lazy);
+		lazyFont->SetStyle(TTF_STYLE_UNDERLINE);
+		lazyFont->SetOutline(TTF_STYLE_BOLD);
+		lazyFont->SetHinting(TTF_HINTING_NONE);
+		lazyFont->SetKerning(false);
+		lazyFont->SetSize(26);
 
-	message = TTF_RenderText_Solid(lazyFont->GetTTF_Font(), "Rise of Viwx", textColor);
+		message = TTF_RenderText_Solid(lazyFont->GetTTF_Font(), "Rise of Viwx", textColor);
 
-	//Holds offsets
-	SDL_Rect offset;
-	//Get offsets
-	offset.x = 200;
-	offset.y = 150;
-	//Blit
-	SDL_BlitSurface(message, NULL, screen, &offset);
-	
-	SDL_Flip(screen);
+		if (!message) {
+			throw TTFException();
+		}
+
+		//Holds offsets
+		SDL_Rect offset;
+		//Get offsets
+		offset.x = 200;
+		offset.y = 150;
+		//Blit
+		if (SDL_BlitSurface(message, NULL, screen, &offset) == -1) {
+			throw SDLException();
+		}
+		
+		if (SDL_Flip(screen) == -1) {
+			throw SDLException();
+		}
+	} catch (const SDLException& sdlException) {
+		throw sdlException;
+	} catch (const TTFException& ttfException) {
+		throw ttfException;
+	}
 }
 
 void Application::OnExit() {
@@ -119,6 +135,7 @@ void Application::OnCleanUp() {
 	delete fontManager;
 	delete imageManager;
 	delete soundManager;
+	delete musicManager;
 
 	SettingsCreator::OnCleanUp();
 
@@ -141,7 +158,9 @@ void Application::InitializeSDLSystem() {
 		throw SDLException();
 	}
 
-	SDL_EnableKeyRepeat(1, SDL_DEFAULT_REPEAT_INTERVAL / 3);
+	if (SDL_EnableKeyRepeat(1, SDL_DEFAULT_REPEAT_INTERVAL / 3) == -1) {
+		throw SDLException();
+	}
 }
 
 void Application::InitializeVideoSystem() {
@@ -268,7 +287,18 @@ void Application::InitializeResources() {
 	}
 
 	// Create Managers
-	fontManager = FontManager::Initialize(fontsPath.c_str());
-	imageManager = ImageManager::Initialize(imagesPath.c_str());
-	soundManager = soundManager::Initialize(soundsPath.c_str());
+	try {
+		fontManager = FontManager::Initialize(fontsPath.c_str());
+		imageManager = ImageManager::Initialize(imagesPath.c_str());
+		soundManager = SoundManager::Initialize(soundsPath.c_str());
+		musicManager = MusicManager::Initialize(musicsPath.c_str());
+	} catch (const SDLException& sdlException) {
+		throw sdlException;
+	} catch (const TTFException& ttfException) {
+		throw ttfException;
+	} catch (const MixerException& mixerException) {
+		throw mixerException;
+	} catch (const GenericException& genericException) {
+		throw genericException;
+	}
 }

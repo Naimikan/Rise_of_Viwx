@@ -9,6 +9,7 @@ class SoundManager {
 		~SoundManager();
 
 		Sound* GetSound(std::string parSoundPath);
+		void PlaySound(Sound* parSound, int parLoops = 0, int parChannel = -1);
 
 	protected:
 		SoundManager(const char* parSoundPath);

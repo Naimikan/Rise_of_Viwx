@@ -8,13 +8,17 @@ class Sound {
 		Sound(std::string parName, std::string parPath);
 		~Sound();
 
+		void Play(int parLoops, int parChannel);
+
 		std::string GetName() { return soundName; }
 		std::string GetPath() { return soundPath; }
+		int GetChannel() { return soundChannel; }
 		Mix_Chunk* GetMix_Chunk() { return sound; }
 
 	private:
 		std::string soundName;
 		std::string soundPath;
+		int soundChannel;
 		Mix_Chunk* sound;
 };
 

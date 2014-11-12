@@ -4,10 +4,15 @@ Image::Image(std::string parName, std::string parPath) : imageName(parName), ima
 	SDL_Surface* tempSurface = NULL;
 
 	if((tempSurface = SDL_LoadBMP(parPath.c_str())) == NULL) {
-		throw GenericException();
+		throw SDLException();
 	}
 
 	image = SDL_DisplayFormat(tempSurface);
+
+	if (!image) {
+		throw SDLException();
+	}
+
 	SDL_FreeSurface(tempSurface);
 }
 

@@ -3,15 +3,27 @@
 SoundManager* SoundManager::instance = NULL;
 
 SoundManager* SoundManager::Initialize(const char* parSoundPath) {
-	if (instance == NULL) {
-		instance = new SoundManager(parSoundPath);
-	}
+	try {
+		if (instance == NULL) {
+			instance = new SoundManager(parSoundPath);
+		}
 
-	return instance;
+		return instance;
+	} catch (const MixerException& mixerException) {
+		throw mixerException;
+	} catch (const GenericException& genericException) {
+		throw genericException;
+	}
 }
 
 SoundManager::SoundManager(const char* parSoundPath) {
-	ResourcesManager::InitializeAllSoundsByPath(parSoundPath);
+	try {
+		ResourcesManager::InitializeAllSoundsByPath(parSoundPath);
+	} catch (const MixerException& mixerException) {
+		throw mixerException;
+	} catch (const GenericException& genericException) {
+		throw genericException;
+	}
 }
 
 SoundManager::~SoundManager() {
@@ -19,6 +31,18 @@ SoundManager::~SoundManager() {
 }
 
 Sound* SoundManager::GetSound(std::string parSoundName) {
-	Sound* foundSound = ResourcesManager::GetSound(parSoundName);
-	return foundSound;
+	try {
+		Sound* foundSound = ResourcesManager::GetSound(parSoundName);
+		return foundSound;
+	} catch (const MixerException& mixerException) {
+		throw mixerException;
+	}
+}
+
+void SoundManager::PlaySound(Sound* parSound, int parLoops, int parChannel) {
+	try {
+		parSound->Play(parLoops, parChannel);
+	} catch (const MixerException& mixerException) {
+		throw mixerException;
+	}
 }

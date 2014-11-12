@@ -3,15 +3,16 @@
 std::map<std::string, Font*> ResourcesManager::fontsList;
 std::map<std::string, Image*> ResourcesManager::imagesList;
 std::map<std::string, Sound*> ResourcesManager::soundsList;
+std::map<std::string, Music*> ResourcesManager::musicsList;
 
 Font* ResourcesManager::CreateFont(std::string parFontName, const char* parFontPath, int parFontSize) {
-	Font* newFont = new Font(parFontName, parFontPath, parFontSize);
+	try {
+		Font* newFont = new Font(parFontName, parFontPath, parFontSize);
 
-	if (!newFont->GetTTF_Font()) {
-		throw TTFException();
+		return newFont;
+	} catch (const TTFException& ttfException) {
+		throw ttfException;
 	}
-
-	return newFont;
 }
 
 Font* ResourcesManager::GetFont(std::string parFontName) {
@@ -61,8 +62,12 @@ void ResourcesManager::InitializeAllFontsByPath(const char* parFontPath) {
 				fontName = ResourcesManager::Lazy;
 			}*/
 
-			Font* newFont = CreateFont(fontName, fullName.c_str());
-			fontsList.insert(std::pair<std::string, Font*>(fontName, newFont));
+			try {
+				Font* newFont = CreateFont(fontName, fullName.c_str());
+				fontsList.insert(std::pair<std::string, Font*>(fontName, newFont));
+			} catch (const TTFException& ttfException) {
+				throw ttfException;
+			}
 		}
 	}
 
@@ -70,22 +75,22 @@ void ResourcesManager::InitializeAllFontsByPath(const char* parFontPath) {
 }
 
 Image* ResourcesManager::CreateImage(std::string parImageName, const char* parImagePath) {
-	Image* newImage = new Image(parImageName, parImagePath);
-	
-	if (!newImage->GetSDL_Surface()) {
-		throw GenericException();
-	}
+	try {
+		Image* newImage = new Image(parImageName, parImagePath);
 
-	return newImage;
+		return newImage;
+	} catch (const SDLException& sdlException) {
+		throw sdlException;
+	}
 }
 
 Image* ResourcesManager::GetImage(std::string parImageName) {
 	if (parImageName.empty()) {
-		throw GenericException("ImageName required.");
+		throw SDLException("ImageName required.");
 	}
 
 	if (imagesList.empty()) {
-		throw GenericException("Images list empty.");
+		throw SDLException("Images list empty.");
 	}
 
 	std::map<std::string, Image*>::const_iterator iteratorImageFound = imagesList.find(parImageName);
@@ -93,7 +98,7 @@ Image* ResourcesManager::GetImage(std::string parImageName) {
 	if (iteratorImageFound != imagesList.end()) {
 		return iteratorImageFound->second;
 	} else {
-		throw GenericException("Image not found.");
+		throw SDLException("Image not found.");
 	}
 }
 
@@ -122,8 +127,12 @@ void ResourcesManager::InitializeAllImagesByPath(const char* parImagePath) {
 
 			imageName = direntPointer->d_name;
 
-			Image* newImage = CreateImage(imageName, fullName.c_str());
-			imagesList.insert(std::pair<std::string, Image*>(imageName, newImage));
+			try {
+				Image* newImage = CreateImage(imageName, fullName.c_str());
+				imagesList.insert(std::pair<std::string, Image*>(imageName, newImage));
+			} catch (const SDLException& sdlException) {
+				throw sdlException;
+			}
 		}
 	}
 
@@ -131,13 +140,13 @@ void ResourcesManager::InitializeAllImagesByPath(const char* parImagePath) {
 }
 
 Sound* ResourcesManager::CreateSound(std::string parSoundName, const char* parSoundPath) {
-	Sound* newSound = new Sound(parSoundName, parSoundPath);
-	
-	if (!newSound->GetMix_Chunk()) {
-		throw MixerException();
-	}
+	try {
+		Sound* newSound = new Sound(parSoundName, parSoundPath);
 
-	return newSound;
+		return newSound;
+	} catch (const MixerException& mixerException) {
+		throw mixerException;
+	}
 }
 
 Sound* ResourcesManager::GetSound(std::string parSoundName) {
@@ -183,8 +192,77 @@ void ResourcesManager::InitializeAllSoundsByPath(const char* parSoundPath) {
 
 			soundName = direntPointer->d_name;
 
-			Sound* newSound = CreateSound(soundName, fullName.c_str());
-			soundsList.insert(std::pair<std::string, Sound*>(soundName, newSound));
+			try {
+				Sound* newSound = CreateSound(soundName, fullName.c_str());
+				soundsList.insert(std::pair<std::string, Sound*>(soundName, newSound));
+			} catch (const MixerException& mixerException) {
+				throw mixerException;
+			}
+		}
+	}
+
+	closedir(directory);
+}
+
+Music* ResourcesManager::CreateMusic(std::string parMusicName, const char* parMusicPath) {
+	try {
+		Music* newMusic = new Music(parMusicName, parMusicPath);
+
+		return newMusic;
+	} catch (const MixerException& mixerException) {
+		throw mixerException;
+	}
+}
+
+Music* ResourcesManager::GetMusic(std::string parMusicName) {
+	if (parMusicName.empty()) {
+		throw MixerException("MusicName required.");
+	}
+
+	if (musicsList.empty()) {
+		throw MixerException("Musics list empty.");
+	}
+
+	std::map<std::string, Music*>::const_iterator iteratorMusicFound = musicsList.find(parMusicName);
+
+	if (iteratorMusicFound != musicsList.end()) {
+		return iteratorMusicFound->second;
+	} else {
+		throw MixerException("Music not found.");
+	}
+}
+
+void ResourcesManager::DeleteMusics() {
+	for (std::map<std::string, Music*>::iterator mapIterator = musicsList.begin(); mapIterator != musicsList.end(); ++mapIterator) {
+		delete (*mapIterator).second;
+	}
+
+	musicsList.clear();
+}
+
+void ResourcesManager::InitializeAllMusicsByPath(const char* parMusicPath) {
+	DIR* directory;
+	struct dirent *direntPointer;
+	std::string musicName;
+
+	if((directory = opendir(parMusicPath)) == NULL) {
+		throw GenericException("Error al abrir el directorio.");
+	}
+
+	while ((direntPointer = readdir(directory)) != NULL) {
+		if (direntPointer->d_type == File) {
+			std::string fullName = parMusicPath;
+			fullName.append("/");
+			fullName.append(direntPointer->d_name);
+
+			musicName = direntPointer->d_name;
+
+			try {
+				Music* newMusic = CreateMusic(musicName, fullName.c_str());
+				musicsList.insert(std::pair<std::string, Music*>(musicName, newMusic));
+			} catch (const MixerException& mixerException) {
+				throw mixerException;
+			}
 		}
 	}
 

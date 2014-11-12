@@ -12,9 +12,9 @@ class Utils {
 
 		// ToString
 		template <typename T> static std::string ToString(const T& parValue) {
-			std::ostringstream stm ;
+			std::ostringstream stm;
 			stm << parValue;
-			return stm.str() ;
+			return stm.str();
 		}
 };
 

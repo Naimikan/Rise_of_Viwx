@@ -22,9 +22,11 @@ RESOURCESMANAGERDIR := $(SRCCOREDIR)/ResourcesManager
 FONTMANAGERDIR := $(RESOURCESMANAGERDIR)/Managers/FontManager
 IMAGEMANAGERDIR := $(RESOURCESMANAGERDIR)/Managers/ImageManager
 SOUNDMANAGERDIR := $(RESOURCESMANAGERDIR)/Managers/SoundManager
+MUSICMANAGERDIR := $(RESOURCESMANAGERDIR)/Managers/MusicManager
 FONTDIR := $(RESOURCESMANAGERDIR)/Resources/Font
 IMAGEDIR := $(RESOURCESMANAGERDIR)/Resources/Image
 SOUNDDIR := $(RESOURCESMANAGERDIR)/Resources/Sound
+MUSICDIR := $(RESOURCESMANAGERDIR)/Resources/Music
 
 .PHONY: all
 all: core application main createExecutable
@@ -41,7 +43,7 @@ logger: $(OBJDIR)/Logger.o
 
 settings: $(OBJDIR)/SettingsCreator.o
 
-resourcesmanager: font image sound $(OBJDIR)/ResourcesManager.o fontmanager imagemanager soundmanager
+resourcesmanager: font image sound music $(OBJDIR)/ResourcesManager.o fontmanager imagemanager soundmanager musicmanager
 
 font: $(OBJDIR)/Font.o
 
@@ -49,11 +51,15 @@ image: $(OBJDIR)/Image.o
 
 sound: $(OBJDIR)/Sound.o
 
+music: $(OBJDIR)/Music.o
+
 fontmanager: $(OBJDIR)/FontManager.o
 
 imagemanager: $(OBJDIR)/ImageManager.o
 
 soundmanager: $(OBJDIR)/SoundManager.o
+
+musicmanager: $(OBJDIR)/MusicManager.o
 
 eventlistener: $(OBJDIR)/EventListener.o
 
@@ -127,6 +133,10 @@ $(OBJDIR)/Image.o: $(IMAGEDIR)/*.cpp
 $(OBJDIR)/Sound.o: $(SOUNDDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(OBJDIR)/Music.o: $(MUSICDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
 	
 $(OBJDIR)/FontManager.o: $(FONTMANAGERDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
@@ -137,6 +147,10 @@ $(OBJDIR)/ImageManager.o: $(IMAGEMANAGERDIR)/*.cpp
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(OBJDIR)/SoundManager.o: $(SOUNDMANAGERDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(OBJDIR)/MusicManager.o: $(MUSICMANAGERDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 

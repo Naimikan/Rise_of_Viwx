@@ -6,6 +6,7 @@
 #include "Resources/Font/cFont.hpp"
 #include "Resources/Image/cImage.hpp"
 #include "Resources/Sound/cSound.hpp"
+#include "Resources/Music/cMusic.hpp"
 
 class ResourcesManager {
 	public:
@@ -23,6 +24,10 @@ class ResourcesManager {
 		static void InitializeAllSoundsByPath(const char* parSoundPath);
 
 		// Musics
+		static Music* CreateMusic(std::string parMusicName, const char* parMusicPath);
+		static Music* GetMusic(std::string parMusicName);
+		static void DeleteMusics();
+		static void InitializeAllMusicsByPath(const char* parMusicPath);
 
 		// Images
 		static Image* CreateImage(std::string parImageName, const char* parImagePath);
@@ -39,6 +44,7 @@ class ResourcesManager {
 		static std::map<std::string, Font*> fontsList;
 		static std::map<std::string, Image*> imagesList;
 		static std::map<std::string, Sound*> soundsList;
+		static std::map<std::string, Music*> musicsList;
 };
 
 #endif // End _CRESOURCESMANAGER_HPP_
