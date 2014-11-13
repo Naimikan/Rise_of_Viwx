@@ -246,8 +246,8 @@ void Application::InitializeVideoSystem() {
 }
 
 void Application::InitializeAudioSystem() {
-	int audioRate, audioChannels, audioBuffers;
-	audioRate = audioChannels = audioBuffers = 0;
+	int audioRate, audioType, audioBuffers, audioChannels;
+	audioRate = audioType = audioBuffers = audioChannels = 0;
 	
 	Uint16 audioFormat = 0;
 
@@ -274,19 +274,22 @@ void Application::InitializeAudioSystem() {
 				case 10: audioFormat = AUDIO_S16SYS; break;
 				case 11: audioFormat = MIX_DEFAULT_FORMAT; break;
 			}
-		} else if (pairItem.first == "Audio Channels") {
-			audioChannels = atoi(pairItem.second.c_str());
+		} else if (pairItem.first == "Audio Type") {
+			audioType = atoi(pairItem.second.c_str());
 		} else if (pairItem.first == "Audio Buffers") {
 			audioBuffers = atoi(pairItem.second.c_str());
+		} else if (pairItem.first == "Audio Channels") {
+			audioChannels = atoi(pairItem.second.c_str());
 		}
 	}
 
 	// Initialize SDL_mixer
-	if (Mix_OpenAudio(audioRate, audioFormat, audioChannels, audioBuffers) == -1) {
+	if (Mix_OpenAudio(audioRate, audioFormat, audioType, audioBuffers) == -1) {
 		throw MixerException();
 	}
 	
-	Mix_AllocateChannels(16);
+	// Allocate Channels
+	Mix_AllocateChannels(audioChannels);
 }
 
 void Application::InitializeTTFSystem() {

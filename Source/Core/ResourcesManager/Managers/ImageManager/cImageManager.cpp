@@ -34,7 +34,7 @@ Image* ImageManager::GetImage(std::string parImageName) {
 	try {
 		Image* foundImage = ResourcesManager::GetImage(parImageName);
 		return foundImage;
-	} catch (const SDLException& sdlException) {
-		throw sdlException;
+	} catch (const GenericException& genericException) {
+		throw genericException;
 	}
 }

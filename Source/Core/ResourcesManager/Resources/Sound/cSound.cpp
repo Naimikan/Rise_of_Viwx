@@ -5,7 +5,7 @@ void SoundEnd(int parChannel) {
 	std::cout << "Finished channel: " << parChannel << std::endl;
 }
 
-Sound::Sound(std::string parName, std::string parPath) : soundName(parName), soundPath(parPath), soundChannel(0) {
+Sound::Sound(std::string parName, std::string parPath) : soundName(parName), soundPath(parPath), soundChannel(-1) {
 	sound = Mix_LoadWAV(parPath.c_str());
 
 	if (!sound) {
@@ -14,6 +14,9 @@ Sound::Sound(std::string parName, std::string parPath) : soundName(parName), sou
 }
 
 Sound::~Sound() {
+	// Check if works
+	//Mix_HaltChannel(soundChannel);
+
 	while(Mix_Playing(soundChannel) != 0);
 
 	Mix_FreeChunk(sound);
@@ -22,7 +25,13 @@ Sound::~Sound() {
 }
 
 void Sound::Play(int parLoops, int parChannel) {
-	soundChannel = Mix_PlayChannel(parChannel, sound, parLoops);
+	if (soundChannel > -1) {
+		if (Mix_Playing(soundChannel) == 0) {
+			soundChannel = Mix_PlayChannel(soundChannel, sound, parLoops);
+		}
+	} else {
+		soundChannel = Mix_PlayChannel(parChannel, sound, parLoops);
+	}
 
 	std::cout << "Sound channel: " << soundChannel << std::endl;
 
@@ -31,4 +40,24 @@ void Sound::Play(int parLoops, int parChannel) {
 	}
 	
 	Mix_ChannelFinished(SoundEnd);
+}
+
+void Sound::Pause() {
+	if (Mix_Playing(soundChannel) == 1) {
+		if (Mix_Paused(soundChannel) == 0) {
+			Mix_Pause(soundChannel);
+		}
+	}
+}
+
+void Sound::Resume() {
+	if (Mix_Playing(soundChannel) == 1) {
+		if (Mix_Paused(soundChannel) == 1) {
+			Mix_Resume(soundChannel);
+		}
+	}
+}
+
+void Sound::Stop() {
+	Mix_HaltChannel(soundChannel);
 }

@@ -12,7 +12,6 @@
 
 class GenericException : public std::exception {
 	public:
-		GenericException();
 		GenericException(const std::string& parMessage);
 		virtual ~GenericException() throw();
 		virtual const char* WhatHappens() const throw();
@@ -21,4 +20,4 @@ class GenericException : public std::exception {
 		std::string exceptionMessage;
 };
 
-#endif // _CGENERICEXCEPTION_HPP_
+#endif // End _CGENERICEXCEPTION_HPP_

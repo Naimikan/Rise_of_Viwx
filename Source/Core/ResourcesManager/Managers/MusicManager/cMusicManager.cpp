@@ -34,8 +34,8 @@ Music* MusicManager::GetMusic(std::string parMusicName) {
 	try {
 		Music* foundMusic = ResourcesManager::GetMusic(parMusicName);
 		return foundMusic;
-	} catch (const MixerException& mixerException) {
-		throw mixerException;
+	} catch (const GenericException& genericException) {
+		throw genericException;
 	}
 }
 

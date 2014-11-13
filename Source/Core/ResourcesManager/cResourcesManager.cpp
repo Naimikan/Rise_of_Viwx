@@ -17,11 +17,11 @@ Font* ResourcesManager::CreateFont(std::string parFontName, const char* parFontP
 
 Font* ResourcesManager::GetFont(std::string parFontName) {
 	if (parFontName.empty()) {
-		throw TTFException("FontName required.");
+		throw GenericException("FontName required.");
 	}
 
 	if (fontsList.empty()) {
-		throw TTFException("Fonts list empty.");
+		throw GenericException("Fonts list empty.");
 	}
 
 	std::map<std::string, Font*>::const_iterator iteratorFontFound = fontsList.find(parFontName);
@@ -29,7 +29,7 @@ Font* ResourcesManager::GetFont(std::string parFontName) {
 	if (iteratorFontFound != fontsList.end()) {
 		return iteratorFontFound->second;
 	} else {
-		throw TTFException("Font not found.");
+		throw GenericException("Font not found.");
 	}
 }
 
@@ -86,11 +86,11 @@ Image* ResourcesManager::CreateImage(std::string parImageName, const char* parIm
 
 Image* ResourcesManager::GetImage(std::string parImageName) {
 	if (parImageName.empty()) {
-		throw SDLException("ImageName required.");
+		throw GenericException("ImageName required.");
 	}
 
 	if (imagesList.empty()) {
-		throw SDLException("Images list empty.");
+		throw GenericException("Images list empty.");
 	}
 
 	std::map<std::string, Image*>::const_iterator iteratorImageFound = imagesList.find(parImageName);
@@ -98,7 +98,7 @@ Image* ResourcesManager::GetImage(std::string parImageName) {
 	if (iteratorImageFound != imagesList.end()) {
 		return iteratorImageFound->second;
 	} else {
-		throw SDLException("Image not found.");
+		throw GenericException("Image not found.");
 	}
 }
 
@@ -151,11 +151,11 @@ Sound* ResourcesManager::CreateSound(std::string parSoundName, const char* parSo
 
 Sound* ResourcesManager::GetSound(std::string parSoundName) {
 	if (parSoundName.empty()) {
-		throw MixerException("SoundName required.");
+		throw GenericException("SoundName required.");
 	}
 
 	if (soundsList.empty()) {
-		throw MixerException("Sounds list empty.");
+		throw GenericException("Sounds list empty.");
 	}
 
 	std::map<std::string, Sound*>::const_iterator iteratorSoundFound = soundsList.find(parSoundName);
@@ -163,7 +163,7 @@ Sound* ResourcesManager::GetSound(std::string parSoundName) {
 	if (iteratorSoundFound != soundsList.end()) {
 		return iteratorSoundFound->second;
 	} else {
-		throw MixerException("Sound not found.");
+		throw GenericException("Sound not found.");
 	}
 }
 
@@ -216,11 +216,11 @@ Music* ResourcesManager::CreateMusic(std::string parMusicName, const char* parMu
 
 Music* ResourcesManager::GetMusic(std::string parMusicName) {
 	if (parMusicName.empty()) {
-		throw MixerException("MusicName required.");
+		throw GenericException("MusicName required.");
 	}
 
 	if (musicsList.empty()) {
-		throw MixerException("Musics list empty.");
+		throw GenericException("Musics list empty.");
 	}
 
 	std::map<std::string, Music*>::const_iterator iteratorMusicFound = musicsList.find(parMusicName);
@@ -228,7 +228,7 @@ Music* ResourcesManager::GetMusic(std::string parMusicName) {
 	if (iteratorMusicFound != musicsList.end()) {
 		return iteratorMusicFound->second;
 	} else {
-		throw MixerException("Music not found.");
+		throw GenericException("Music not found.");
 	}
 }
 

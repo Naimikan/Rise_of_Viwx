@@ -35,7 +35,7 @@ Font* FontManager::GetFont(std::string parFontName) {
 	try {
 		Font* foundFont = ResourcesManager::GetFont(parFontName);
 		return foundFont;
-	} catch (const TTFException& ttfException) {
-		throw ttfException;
+	} catch (const GenericException& genericException) {
+		throw genericException;
 	}
 }

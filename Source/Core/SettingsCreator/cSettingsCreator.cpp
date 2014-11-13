@@ -113,8 +113,9 @@ void SettingsCreator::ConfigureSettingsFile() {
 			1 - Mono
 			2 - Estereo
 		*/
-		PutValue("Audio Settings", "Audio Channels", "2");
+		PutValue("Audio Settings", "Audio Type", "2");
 		PutValue("Audio Settings", "Audio Buffers", "4096"); // Valor recomendado
+		PutValue("Audio Settings", "Audio Channels", "16"); // Canales que se reservarán
 
 		PutBlankLine();
 

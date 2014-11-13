@@ -1,9 +1,5 @@
 #include "cGenericException.hpp"
 
-GenericException::GenericException() : exception(), exceptionMessage(SDL_GetError()) {
-
-}
-
 GenericException::GenericException(const std::string& parMessage) : exception(), exceptionMessage(parMessage) {
 
 }

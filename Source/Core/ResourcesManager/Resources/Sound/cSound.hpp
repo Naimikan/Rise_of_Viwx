@@ -9,6 +9,9 @@ class Sound {
 		~Sound();
 
 		void Play(int parLoops, int parChannel);
+		void Pause();
+		void Resume();
+		void Stop();
 
 		std::string GetName() { return soundName; }
 		std::string GetPath() { return soundPath; }

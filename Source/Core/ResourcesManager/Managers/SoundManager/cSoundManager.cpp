@@ -34,8 +34,8 @@ Sound* SoundManager::GetSound(std::string parSoundName) {
 	try {
 		Sound* foundSound = ResourcesManager::GetSound(parSoundName);
 		return foundSound;
-	} catch (const MixerException& mixerException) {
-		throw mixerException;
+	} catch (const GenericException& genericException) {
+		throw genericException;
 	}
 }
 
