@@ -6,9 +6,11 @@ Application::Application() : isRunning(true), screen(NULL), fontManager(NULL), i
 
 int Application::OnExecute() {
 	try {
+		Timer fpsManager;
+
 		OnInit();
 		
-		soundManager->PlaySound(soundManager->GetSound("high.wav"), -1);
+		/*soundManager->PlaySound(soundManager->GetSound("high.wav"), -1);
 		soundManager->PlaySound(soundManager->GetSound("low.wav"), -1);
 		soundManager->PlaySound(soundManager->GetSound("medium.wav"), -1);
 		soundManager->PlaySound(soundManager->GetSound("scratch.wav"), -1);
@@ -19,15 +21,19 @@ int Application::OnExecute() {
 		soundManager->PlaySound(soundManager->GetSound("high.wav"), -1);
 		soundManager->PlaySound(soundManager->GetSound("low.wav"), -1);
 		soundManager->PlaySound(soundManager->GetSound("medium.wav"), -1);
-		soundManager->PlaySound(soundManager->GetSound("scratch.wav"), -1);
+		soundManager->PlaySound(soundManager->GetSound("scratch.wav"), -1);*/
 		
 		while (isRunning) {
+			fpsManager.Start();
+
 			while (SDL_PollEvent(&eventHandled)) {
 				OnEvent(&eventHandled);
 			}
 			
 			OnLoop();
 			OnRender();
+
+			fpsManager.FrameRate();
 		}
 		
 		OnCleanUp();

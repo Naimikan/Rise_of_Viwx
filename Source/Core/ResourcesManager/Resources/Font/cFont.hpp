@@ -56,6 +56,8 @@ class Font {
 		std::string GetPath() { return fontPath; }
 		TTF_Font* GetTTF_Font() { return font; }
 
+		void Initialize();
+
 	private:
 		TTF_Font* font;
 		std::string fontName;

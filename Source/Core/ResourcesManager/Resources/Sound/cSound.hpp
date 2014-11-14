@@ -8,6 +8,8 @@ class Sound {
 		Sound(std::string parName, std::string parPath);
 		~Sound();
 
+		void Initialize();
+
 		void Play(int parLoops, int parChannel);
 		void Pause();
 		void Resume();

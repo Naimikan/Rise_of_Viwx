@@ -3,6 +3,8 @@
 
 #include "../Core/iGlobals.hpp"
 
+#include "../Core/Timer/cTimer.hpp"
+
 #include "../Core/EventListener/cEventListener.hpp"
 #include "../Core/SettingsCreator/cSettingsCreator.hpp"
 
@@ -27,7 +29,7 @@ class Application : public EventListener {
 		
 	private:
 		bool isRunning;
-		
+
 		SDL_Event eventHandled;
 		SDL_Surface* screen;
 

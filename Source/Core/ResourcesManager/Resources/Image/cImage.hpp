@@ -8,6 +8,9 @@ class Image {
 		Image(std::string parName, std::string parPath);
 		~Image();
 
+		void Initialize();
+
+		std::string GetName() { return imageName; }
 		std::string GetPath() { return imagePath; }
 		SDL_Surface* GetSDL_Surface() { return image; }
 

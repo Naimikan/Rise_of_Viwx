@@ -12,6 +12,7 @@ PROJECTNAME := RiseOfViwx
 APPLICATIONDIR := $(SRCDIR)/Application
 UTILSDIR := $(SRCCOREDIR)/Utils
 LOGGERDIR := $(SRCCOREDIR)/Logger
+TIMERDIR := $(SRCCOREDIR)/Timer
 SETTINGSCREATORDIR := $(SRCCOREDIR)/SettingsCreator
 GENERICEXCEPTIONDIR := $(SRCCOREDIR)/Exception
 SDLEXCEPTIONDIR := $(SRCCOREDIR)/Exception/SDLException
@@ -33,9 +34,11 @@ all: core application main createExecutable
 
 application: $(OBJDIR)/Application.o
 
-core: utils logger exceptions settings eventlistener resourcesmanager
+core: timer utils logger exceptions settings eventlistener resourcesmanager
 
 exceptions: genericexception sdlexception ttfexception mixerexception
+
+timer: $(OBJDIR)/Timer.o
 
 utils: $(OBJDIR)/Utils.o
 
@@ -85,6 +88,10 @@ $(OBJDIR)/Application.o: $(APPLICATIONDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 	
+$(OBJDIR)/Timer.o: $(TIMERDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
 $(OBJDIR)/Utils.o: $(UTILSDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)

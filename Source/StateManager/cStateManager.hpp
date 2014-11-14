@@ -1,0 +1,6 @@
+#ifndef _CSTATEMANAGER_HPP_
+#define _CSTATEMANAGER_HPP_
+
+
+
+#endif // End _CSTATEMANAGER_HPP_

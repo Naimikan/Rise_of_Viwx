@@ -8,6 +8,8 @@ class Music {
 		Music(std::string parName, std::string parPath);
 		~Music();
 
+		void Initialize();
+
 		void Play(int parLoops);
 		void Pause();
 		void Resume();

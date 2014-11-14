@@ -1,6 +1,18 @@
 #include "cImage.hpp"
 
 Image::Image(std::string parName, std::string parPath) : imageName(parName), imagePath(parPath) {
+
+}
+
+Image::~Image() {
+	if (image) {
+        SDL_FreeSurface(image);
+    }
+
+    image = NULL;
+}
+
+void Image::Initialize() {
 	SDL_Surface* tempSurface = NULL;
 
 	if((tempSurface = SDL_LoadBMP(parPath.c_str())) == NULL) {
@@ -14,12 +26,4 @@ Image::Image(std::string parName, std::string parPath) : imageName(parName), ima
 	}
 
 	SDL_FreeSurface(tempSurface);
-}
-
-Image::~Image() {
-	if (image) {
-        SDL_FreeSurface(image);
-    }
-
-    image = NULL;
 }

@@ -1,17 +1,21 @@
 #include "cMusic.hpp"
 
 Music::Music(std::string parName, std::string parPath) : musicName(parName), musicPath(parPath) {
-	music = Mix_LoadMUS(parPath.c_str());
 
-	if (!music) {
-		throw MixerException();
-	}
 }
 
 Music::~Music() {
 	Mix_FreeMusic(music);
 
 	music = NULL;
+}
+
+void Music::Initialize() {
+	music = Mix_LoadMUS(parPath.c_str());
+
+	if (!music) {
+		throw MixerException();
+	}
 }
 
 void Music::Play(int parLoops) {

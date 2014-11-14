@@ -6,11 +6,7 @@ void SoundEnd(int parChannel) {
 }
 
 Sound::Sound(std::string parName, std::string parPath) : soundName(parName), soundPath(parPath), soundChannel(-1) {
-	sound = Mix_LoadWAV(parPath.c_str());
 
-	if (!sound) {
-		throw MixerException();
-	}
 }
 
 Sound::~Sound() {
@@ -22,6 +18,14 @@ Sound::~Sound() {
 	Mix_FreeChunk(sound);
 
 	sound = NULL;
+}
+
+void Sound::Initialize() {
+	sound = Mix_LoadWAV(parPath.c_str());
+
+	if (!sound) {
+		throw MixerException();
+	}
 }
 
 void Sound::Play(int parLoops, int parChannel) {
