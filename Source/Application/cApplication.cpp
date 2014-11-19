@@ -79,6 +79,8 @@ bool Application::OnInit() {
 		InitializeAudioSystem();
 		InitializeResources();
 
+		StateManager::SetActiveState(STATE_MENU);
+
 		return true;
 	} catch (const SDLException& sdlException) {
 		throw sdlException;
@@ -94,7 +96,7 @@ bool Application::OnInit() {
 }
 
 void Application::OnLoop() {
-	
+	StateManager::OnLoop();
 }
 
 void Application::OnRender() {
@@ -105,32 +107,7 @@ void Application::OnRender() {
 			throw SDLException();
 		}
 
-		SDL_Surface *message = NULL;
-
-		SDL_Color textColor = { 255, 255, 255 };
-
-		Font* lazyFont = fontManager->GetFont(FontManager::Lazy);
-		lazyFont->SetStyle(TTF_STYLE_UNDERLINE);
-		lazyFont->SetOutline(TTF_STYLE_BOLD);
-		lazyFont->SetHinting(TTF_HINTING_NONE);
-		lazyFont->SetKerning(false);
-		lazyFont->SetSize(26);
-
-		message = TTF_RenderText_Solid(lazyFont->GetTTF_Font(), "Rise of Viwx", textColor);
-
-		if (!message) {
-			throw TTFException();
-		}
-
-		//Holds offsets
-		SDL_Rect offset;
-		//Get offsets
-		offset.x = 200;
-		offset.y = 150;
-		//Blit
-		if (SDL_BlitSurface(message, NULL, screen, &offset) == -1) {
-			throw SDLException();
-		}
+		StateManager::OnRender(screen);
 		
 		if (SDL_Flip(screen) == -1) {
 			throw SDLException();
@@ -148,6 +125,8 @@ void Application::OnExit() {
 
 void Application::OnEvent(SDL_Event* parEvent) {
 	EventListener::OnEvent(parEvent);
+
+	StateManager::OnEvent(parEvent);
 }
 
 void Application::OnCleanUp() {
@@ -156,6 +135,7 @@ void Application::OnCleanUp() {
 	delete soundManager;
 	delete musicManager;
 
+	StateManager::SetActiveAppState(STATE_NONE);
 	SettingsCreator::OnCleanUp();
 
 	SDL_FreeSurface(screen);

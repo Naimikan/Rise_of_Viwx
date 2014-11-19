@@ -40,7 +40,7 @@ void Timer::Resume() {
     }
 }
 
-int Timer::GetTicks() {
+int Timer::GetDeltaTime() {
     if (isStarted) {
         if (isPaused) {
             return pausedTicks;
@@ -53,7 +53,7 @@ int Timer::GetTicks() {
 }
 
 void Timer::FrameRate() {
-    if (GetTicks() < 1000 / Timer::FRAMES_PER_SECOND) {
-        SDL_Delay((1000 / Timer::FRAMES_PER_SECOND) - GetTicks());
+    if (GetDeltaTime() < 1000 / Timer::FRAMES_PER_SECOND) {
+        SDL_Delay((1000 / Timer::FRAMES_PER_SECOND) - GetDeltaTime());
     }
 }

@@ -8,6 +8,8 @@
 #include "../Core/EventListener/cEventListener.hpp"
 #include "../Core/SettingsCreator/cSettingsCreator.hpp"
 
+#include "../StateManager/cStateManager.hpp"
+
 #include "../Core/ResourcesManager/Managers/FontManager/cFontManager.hpp"
 #include "../Core/ResourcesManager/Managers/ImageManager/cImageManager.hpp"
 #include "../Core/ResourcesManager/Managers/SoundManager/cSoundManager.hpp"

@@ -13,7 +13,7 @@ class Timer {
         void Pause();
         void Resume();
 
-        int GetTicks();
+        int GetDeltaTime();
 
         bool IsStarted() { return isStarted; }
         bool IsPaused() { return isPaused; }
