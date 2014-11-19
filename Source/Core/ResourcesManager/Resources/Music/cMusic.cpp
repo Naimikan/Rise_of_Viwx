@@ -11,7 +11,7 @@ Music::~Music() {
 }
 
 void Music::Initialize() {
-	music = Mix_LoadMUS(parPath.c_str());
+	music = Mix_LoadMUS(musicPath.c_str());
 
 	if (!music) {
 		throw MixerException();

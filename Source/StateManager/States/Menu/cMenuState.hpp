@@ -1,8 +1,8 @@
 #ifndef _CMENUSTATE_HPP_
 #define _CMENUSTATE_HPP_
 
-#include "cState.hpp"
-#include "../../Core/ResourcesManager/Managers/FontManager/cFontManager.hpp"
+#include "../cState.hpp"
+#include "../../../Core/ResourcesManager/Managers/FontManager/cFontManager.hpp"
 
 class MenuState : public State {
 	public:
@@ -14,8 +14,13 @@ class MenuState : public State {
 		void OnRender(SDL_Surface* parSurface);
 
 	private:
+		MenuState();
+		
 		static MenuState* instance;
 
+		SDL_Surface *message;
+		Font* lazyFont;
+		
 		FontManager* fontManager;
 };
 

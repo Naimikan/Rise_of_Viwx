@@ -5,7 +5,7 @@
 
 class MusicManager {
 	public:
-		static MusicManager* Initialize(const char* parMusicPath);
+		static MusicManager* GetInstance();
 		~MusicManager();
 
 		Music* GetMusic(std::string parMusicPath);
@@ -13,9 +13,11 @@ class MusicManager {
 		void PauseMusic(Music* parMusic);
 		void ResumeMusic(Music* parMusic);
 		void StopMusic(Music* parMusic);
+		
+		void Initialize(const char* parMusicPath);
 
 	protected:
-		MusicManager(const char* parMusicPath);
+		MusicManager();
 		//MusicManager(const MusicManager &);;
 		MusicManager &operator= (const MusicManager &);
 

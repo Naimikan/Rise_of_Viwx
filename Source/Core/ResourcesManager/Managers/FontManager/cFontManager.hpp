@@ -5,15 +5,16 @@
 
 class FontManager {
 	public:
-		static FontManager* Initialize(const char* parFontPath);
+		static FontManager* GetInstance();
 		~FontManager();
 
 		Font* GetFont(std::string parFontName);
+		void Initialize(const char* parFontPath);
 
 		static std::string Lazy;
 
 	protected:
-		FontManager(const char* parFontPath);
+		FontManager();
 		//FontManager(const FontManager &);
 		FontManager &operator= (const FontManager &);
 

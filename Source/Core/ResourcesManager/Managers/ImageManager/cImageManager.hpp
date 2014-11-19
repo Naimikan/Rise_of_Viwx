@@ -5,13 +5,14 @@
 
 class ImageManager {
 	public:
-		static ImageManager* Initialize(const char* parImagePath);
+		static ImageManager* GetInstance();
 		~ImageManager();
 
 		Image* GetImage(std::string parImageName);
-
+		void Initialize(const char* parImagePath);
+		
 	protected:
-		ImageManager(const char* parImagePath);
+		ImageManager();
 		//ImageManager(const ImageManager &);
 		ImageManager &operator= (const ImageManager &);
 

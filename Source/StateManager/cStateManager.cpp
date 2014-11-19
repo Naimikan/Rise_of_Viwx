@@ -1,7 +1,8 @@
 #include "cStateManager.hpp"
 
 // Incluir aqui los otros estados, por referencias cíclicas
-#include "States/cMenuState.hpp"
+#include "States/Menu/cMenuState.hpp"
+#include "States/Game/cGameState.hpp"
 
 State* StateManager::activeState = 0;
  
@@ -45,6 +46,10 @@ void StateManager::SetActiveState(int parStateID) {
 
 		case STATE_MENU:
 			activeState = MenuState::GetInstance();
+			break;
+			
+		case STATE_GAME:
+			activeState = GameState::GetInstance();
 			break;
 	}
 

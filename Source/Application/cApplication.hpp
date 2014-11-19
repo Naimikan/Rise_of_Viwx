@@ -35,11 +35,6 @@ class Application : public EventListener {
 		SDL_Event eventHandled;
 		SDL_Surface* screen;
 
-		FontManager* fontManager;
-		ImageManager* imageManager;
-		SoundManager* soundManager;
-		MusicManager* musicManager;
-
 		void InitializeSDLSystem();
 		void InitializeVideoSystem();
 		void InitializeTTFSystem();

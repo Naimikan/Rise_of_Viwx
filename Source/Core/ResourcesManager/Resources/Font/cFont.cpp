@@ -25,7 +25,7 @@ void Font::SetSize(int parNewSize) {
 }
 
 void Font::Initialize() {
-	font = TTF_OpenFont(parPath.c_str(), parSize);
+	font = TTF_OpenFont(fontPath.c_str(), fontSize);
 
 	if (!font) {
 		throw TTFException();

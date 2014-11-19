@@ -21,7 +21,7 @@ Sound::~Sound() {
 }
 
 void Sound::Initialize() {
-	sound = Mix_LoadWAV(parPath.c_str());
+	sound = Mix_LoadWAV(soundPath.c_str());
 
 	if (!sound) {
 		throw MixerException();

@@ -10,6 +10,10 @@ LOGDIR := Logs
 PROJECTNAME := RiseOfViwx
 
 APPLICATIONDIR := $(SRCDIR)/Application
+STATEMANAGERDIR := $(SRCDIR)/StateManager
+STATEDIR := $(STATEMANAGERDIR)/States
+MENUSTATEDIR := $(STATEDIR)/Menu
+GAMESTATEDIR := $(STATEDIR)/Game
 UTILSDIR := $(SRCCOREDIR)/Utils
 LOGGERDIR := $(SRCCOREDIR)/Logger
 TIMERDIR := $(SRCCOREDIR)/Timer
@@ -30,9 +34,13 @@ SOUNDDIR := $(RESOURCESMANAGERDIR)/Resources/Sound
 MUSICDIR := $(RESOURCESMANAGERDIR)/Resources/Music
 
 .PHONY: all
-all: core application main createExecutable
+all: core statemanager application main createExecutable
 
 application: $(OBJDIR)/Application.o
+
+states: $(OBJDIR)/State.o $(OBJDIR)/MenuState.o $(OBJDIR)/GameState.o
+
+statemanager: states $(OBJDIR)/StateManager.o
 
 core: timer utils logger exceptions settings eventlistener resourcesmanager
 
@@ -158,6 +166,22 @@ $(OBJDIR)/SoundManager.o: $(SOUNDMANAGERDIR)/*.cpp
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(OBJDIR)/MusicManager.o: $(MUSICMANAGERDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(OBJDIR)/State.o: $(STATEDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+	
+$(OBJDIR)/MenuState.o: $(MENUSTATEDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(OBJDIR)/GameState.o: $(GAMESTATEDIR)/*.cpp
+	@mkdir -p $(OBJDIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(OBJDIR)/StateManager.o: $(STATEMANAGERDIR)/*.cpp
 	@mkdir -p $(OBJDIR)
 	$(CC) -c -o $@ $< $(CFLAGS)
 

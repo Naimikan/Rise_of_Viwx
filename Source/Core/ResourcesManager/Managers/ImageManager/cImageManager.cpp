@@ -2,21 +2,23 @@
 
 ImageManager* ImageManager::instance = NULL;
 
-ImageManager* ImageManager::Initialize(const char* parImagePath) {
-	try {
-		if (instance == NULL) {
-			instance = new ImageManager(parImagePath);
-		}
-
-		return instance;
-	} catch (const SDLException& sdlException) {
-		throw sdlException;
-	} catch (const GenericException& genericException) {
-		throw genericException;
+ImageManager* ImageManager::GetInstance() {
+	if (instance == NULL) {
+		instance = new ImageManager();
 	}
+
+	return instance;
 }
 
-ImageManager::ImageManager(const char* parImagePath) {
+ImageManager::ImageManager() {
+	
+}
+
+ImageManager::~ImageManager() {
+	ResourcesManager::DeleteImages();
+}
+
+void ImageManager::Initialize(const char* parImagePath) {
 	try {
 		ResourcesManager::InitializeAllImagesByPath(parImagePath);
 	} catch (const SDLException& sdlException) {
@@ -24,10 +26,6 @@ ImageManager::ImageManager(const char* parImagePath) {
 	} catch (const GenericException& genericException) {
 		throw genericException;
 	}
-}
-
-ImageManager::~ImageManager() {
-	ResourcesManager::DeleteImages();
 }
 
 Image* ImageManager::GetImage(std::string parImageName) {

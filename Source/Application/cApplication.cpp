@@ -1,6 +1,6 @@
 #include "cApplication.hpp"
 
-Application::Application() : isRunning(true), screen(NULL), fontManager(NULL), imageManager(NULL), soundManager(NULL), musicManager(NULL) {
+Application::Application() : isRunning(true), screen(NULL) {
 
 }
 
@@ -9,19 +9,6 @@ int Application::OnExecute() {
 		Timer fpsManager;
 
 		OnInit();
-		
-		/*soundManager->PlaySound(soundManager->GetSound("high.wav"), -1);
-		soundManager->PlaySound(soundManager->GetSound("low.wav"), -1);
-		soundManager->PlaySound(soundManager->GetSound("medium.wav"), -1);
-		soundManager->PlaySound(soundManager->GetSound("scratch.wav"), -1);
-		soundManager->PlaySound(soundManager->GetSound("high.wav"), -1);
-		soundManager->PlaySound(soundManager->GetSound("low.wav"), -1);
-		soundManager->PlaySound(soundManager->GetSound("medium.wav"), -1);
-		soundManager->PlaySound(soundManager->GetSound("scratch.wav"), -1);
-		soundManager->PlaySound(soundManager->GetSound("high.wav"), -1);
-		soundManager->PlaySound(soundManager->GetSound("low.wav"), -1);
-		soundManager->PlaySound(soundManager->GetSound("medium.wav"), -1);
-		soundManager->PlaySound(soundManager->GetSound("scratch.wav"), -1);*/
 		
 		while (isRunning) {
 			fpsManager.Start();
@@ -130,12 +117,7 @@ void Application::OnEvent(SDL_Event* parEvent) {
 }
 
 void Application::OnCleanUp() {
-	delete fontManager;
-	delete imageManager;
-	delete soundManager;
-	delete musicManager;
-
-	StateManager::SetActiveAppState(STATE_NONE);
+	StateManager::SetActiveState(STATE_NONE);
 	SettingsCreator::OnCleanUp();
 
 	SDL_FreeSurface(screen);
@@ -149,19 +131,10 @@ void Application::OnKeyDown(SDLKey parSym, SDLMod parMod, Uint16 parUnicode) {
 	switch(parSym) {
 		case SDLK_ESCAPE: OnExit(); break;
 		case SDLK_h:
-			soundManager->PlaySound(soundManager->GetSound("high.wav"));
+			StateManager::SetActiveState(STATE_MENU);
 			break;
 		case SDLK_j:
-			soundManager->PlaySound(soundManager->GetSound("low.wav"));
-			break;
-		case SDLK_k:
-			soundManager->PlaySound(soundManager->GetSound("medium.wav"));
-			break;
-		case SDLK_l:
-			soundManager->PlaySound(soundManager->GetSound("scratch.wav"));
-			break;
-		case SDLK_m:
-			musicManager->PlayMusic(musicManager->GetMusic("beat.wav"));
+			StateManager::SetActiveState(STATE_GAME);
 			break;
 		default: { };
 	}
@@ -305,14 +278,12 @@ void Application::InitializeResources() {
 		}
 	}
 
-	// Create Managers
+	// Initialize Managers
 	try {
-		fontManager = FontManager::GetInstance();
-		fontManager->Initialize(fontsPath.c_str());
-
-		imageManager = ImageManager::Initialize(imagesPath.c_str());
-		soundManager = SoundManager::Initialize(soundsPath.c_str());
-		musicManager = MusicManager::Initialize(musicsPath.c_str());
+		FontManager::GetInstance()->Initialize(fontsPath.c_str());
+		ImageManager::GetInstance()->Initialize(imagesPath.c_str());
+		SoundManager::GetInstance()->Initialize(soundsPath.c_str());
+		MusicManager::GetInstance()->Initialize(musicsPath.c_str());
 	} catch (const SDLException& sdlException) {
 		throw sdlException;
 	} catch (const TTFException& ttfException) {

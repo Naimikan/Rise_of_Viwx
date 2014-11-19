@@ -15,7 +15,7 @@ Image::~Image() {
 void Image::Initialize() {
 	SDL_Surface* tempSurface = NULL;
 
-	if((tempSurface = SDL_LoadBMP(parPath.c_str())) == NULL) {
+	if((tempSurface = SDL_LoadBMP(imagePath.c_str())) == NULL) {
 		throw SDLException();
 	}
 

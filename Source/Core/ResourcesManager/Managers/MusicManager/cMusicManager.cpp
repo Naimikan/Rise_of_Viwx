@@ -2,21 +2,23 @@
 
 MusicManager* MusicManager::instance = NULL;
 
-MusicManager* MusicManager::Initialize(const char* parMusicPath) {
-	try {
-		if (instance == NULL) {
-			instance = new MusicManager(parMusicPath);
-		}
-
-		return instance;
-	} catch (const MixerException& mixerException) {
-		throw mixerException;
-	} catch (const GenericException& genericException) {
-		throw genericException;
+MusicManager* MusicManager::GetInstance() {
+	if (instance == NULL) {
+		instance = new MusicManager();
 	}
+
+	return instance;
 }
 
-MusicManager::MusicManager(const char* parMusicPath) {
+MusicManager::MusicManager() {
+	
+}
+
+MusicManager::~MusicManager() {
+	ResourcesManager::DeleteMusics();
+}
+
+void MusicManager::Initialize(const char* parMusicPath) {
 	try {
 		ResourcesManager::InitializeAllMusicsByPath(parMusicPath);
 	} catch (const MixerException& mixerException) {
@@ -24,10 +26,6 @@ MusicManager::MusicManager(const char* parMusicPath) {
 	} catch (const GenericException& genericException) {
 		throw genericException;
 	}
-}
-
-MusicManager::~MusicManager() {
-	ResourcesManager::DeleteMusics();
 }
 
 Music* MusicManager::GetMusic(std::string parMusicName) {
