@@ -307,7 +307,9 @@ void Application::InitializeResources() {
 
 	// Create Managers
 	try {
-		fontManager = FontManager::Initialize(fontsPath.c_str());
+		fontManager = FontManager::GetInstance();
+		fontManager->Initialize(fontsPath.c_str());
+
 		imageManager = ImageManager::Initialize(imagesPath.c_str());
 		soundManager = SoundManager::Initialize(soundsPath.c_str());
 		musicManager = MusicManager::Initialize(musicsPath.c_str());
