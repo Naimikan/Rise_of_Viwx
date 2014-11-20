@@ -30,15 +30,19 @@ void MenuState::OnActivate() {
 	lazyFont->SetSize(26);
 
 	message = TTF_RenderText_Solid(lazyFont->GetTTF_Font(), "MenuState", textColor);
+
+	if (!message) {
+		throw TTFException();
+	}
 }
 
 void MenuState::OnDeactivate() {
 	// Liberar memoria de recursos
 	if (message) {
-        SDL_FreeSurface(message);
-    }
+		SDL_FreeSurface(message);
+	}
 
-    message = NULL;
+	message = NULL;
 }
 
 void MenuState::OnLoop() {
@@ -46,16 +50,13 @@ void MenuState::OnLoop() {
 }
 
 void MenuState::OnRender(SDL_Surface* parSurface) {
-	if (!message) {
-		throw TTFException();
-	}
-
 	//Holds offsets
 	SDL_Rect offset;
 	
 	//Get offsets
 	offset.x = 200;
 	offset.y = 150;
+
 	//Blit
 	if (SDL_BlitSurface(message, NULL, parSurface, &offset) == -1) {
 		throw SDLException();

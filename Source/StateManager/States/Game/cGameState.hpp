@@ -18,6 +18,9 @@ class GameState : public State {
 		
 		static GameState* instance;
 
+		SDL_Surface *message;
+		Font* lazyFont;
+
 		FontManager* fontManager;
 };
 

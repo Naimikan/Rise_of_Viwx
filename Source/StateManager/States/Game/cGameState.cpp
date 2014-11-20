@@ -11,30 +11,17 @@ GameState* GameState::GetInstance() {
 	return instance;
 }
 
-GameState::GameState() : fontManager(NULL) {
+GameState::GameState() {
 	
 }
 
 void GameState::OnActivate() {
 	// Cargar recursos
 	fontManager = FontManager::GetInstance();
-}
-
-void GameState::OnDeactivate() {
-	// Liberar memoria de recursos
-}
-
-void GameState::OnLoop() {
-
-}
-
-void GameState::OnRender(SDL_Surface* parSurface) {
-	SDL_Surface *message = NULL;
-
-	SDL_Color textColor = { 255, 255, 255 };
-
-	Font* lazyFont = fontManager->GetFont(FontManager::Lazy);
+	lazyFont = fontManager->GetFont(FontManager::Lazy);
 	lazyFont->Initialize();
+	
+	SDL_Color textColor = {255, 255, 255};
 	
 	lazyFont->SetStyle(TTF_STYLE_UNDERLINE);
 	lazyFont->SetOutline(TTF_STYLE_BOLD);
@@ -47,12 +34,29 @@ void GameState::OnRender(SDL_Surface* parSurface) {
 	if (!message) {
 		throw TTFException();
 	}
+}
 
+void GameState::OnDeactivate() {
+	// Liberar memoria de recursos
+	if (message) {
+		SDL_FreeSurface(message);
+	}
+
+	message = NULL;
+}
+
+void GameState::OnLoop() {
+
+}
+
+void GameState::OnRender(SDL_Surface* parSurface) {
 	//Holds offsets
 	SDL_Rect offset;
+
 	//Get offsets
 	offset.x = 200;
 	offset.y = 150;
+
 	//Blit
 	if (SDL_BlitSurface(message, NULL, parSurface, &offset) == -1) {
 		throw SDLException();
