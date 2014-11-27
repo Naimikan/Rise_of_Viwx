@@ -10,14 +10,7 @@ Sound::Sound(std::string parName, std::string parPath) : soundName(parName), sou
 }
 
 Sound::~Sound() {
-	// Check if works
-	//Mix_HaltChannel(soundChannel);
-
-	while(Mix_Playing(soundChannel) != 0);
-
-	Mix_FreeChunk(sound);
-
-	sound = NULL;
+	Uninitialize();
 }
 
 void Sound::Initialize() {
@@ -26,6 +19,17 @@ void Sound::Initialize() {
 	if (!sound) {
 		throw MixerException();
 	}
+}
+
+void Sound::Uninitialize() {
+	// Check if works
+	//Mix_HaltChannel(soundChannel);
+
+	while(Mix_Playing(soundChannel) != 0);
+
+	Mix_FreeChunk(sound);
+
+	sound = NULL;
 }
 
 void Sound::Play(int parLoops, int parChannel) {

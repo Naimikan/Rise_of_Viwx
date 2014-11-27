@@ -66,8 +66,8 @@ void SettingsCreator::PutBlankLine() {
 }
 
 void SettingsCreator::ConfigureSettingsFile() {
-	if (!ExistConfigFile("./Settings.cfg")) {
-		OpenFile("./Settings.cfg");
+	if (!ExistConfigFile("./Settings/Settings.cfg")) {
+		OpenFile("./Settings/Settings.cfg");
 
 		PutSection("Resolution");
 		PutValue("Resolution", "Width", "640");
@@ -83,6 +83,12 @@ void SettingsCreator::ConfigureSettingsFile() {
 		PutValue("Media Routes", "Musics", "./Media/Musics");
 		PutValue("Media Routes", "Images", "./Media/Images");
 		PutValue("Media Routes", "Fonts", "./Media/Fonts");
+		
+		PutBlankLine();
+		
+		PutSection("Level Settings");
+		PutValue("Level Settings", "Level 1", "./Media/Settings/Level_1");
+		PutValue("Level Settings", "Level 2", "./Media/Settings/Level_2");
 
 		PutBlankLine();
 
@@ -122,6 +128,8 @@ void SettingsCreator::ConfigureSettingsFile() {
 		PutSection("Other Settings");
 		PutValue("Other Settings", "Application Name", "RiseOfViwx");
 		PutValue("Other Settings", "Version", "0.01");
+		
+		PutBlankLine();
 
 		// El formato es sin las comillas, pero existe la posibilidad de ponerlas. Estudiar el impacto en la clase
 		//PutValue("Media Routes", "Sounds", "\"./Media/Sounds\"");
@@ -133,7 +141,7 @@ void SettingsCreator::ConfigureSettingsFile() {
 		//PutValue("Other Section", "Key", "Value");
 		CloseFile();
 	} else {
-		PrepareStructFromFile("./Settings.cfg");
+		PrepareStructFromFile("./Settings/Settings.cfg");
 	}
 }
 

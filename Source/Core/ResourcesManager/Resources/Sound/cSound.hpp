@@ -9,6 +9,7 @@ class Sound {
 		~Sound();
 
 		void Initialize();
+		void Uninitialize();
 
 		void Play(int parLoops, int parChannel);
 		void Pause();

@@ -57,6 +57,7 @@ class Font {
 		TTF_Font* GetTTF_Font() { return font; }
 
 		void Initialize();
+		void Uninitialize();
 
 	private:
 		TTF_Font* font;

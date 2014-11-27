@@ -12,27 +12,38 @@ GameState* GameState::GetInstance() {
 }
 
 GameState::GameState() {
-	
+	fontManager = FontManager::GetInstance();
+	imageManager = ImageManager::GetInstance();
+	musicManager = MusicManager::GetInstance();
 }
 
 void GameState::OnActivate() {
 	// Cargar recursos
-	fontManager = FontManager::GetInstance();
-	lazyFont = fontManager->GetFont(FontManager::Lazy);
-	lazyFont->Initialize();
+	try {
+		lazyFont = fontManager->GetFont(FontManager::Lazy);
+		lazyFont->Initialize();
+		
+		SDL_Color textColor = {255, 255, 255};
 	
-	SDL_Color textColor = {255, 255, 255};
-	
-	lazyFont->SetStyle(TTF_STYLE_UNDERLINE);
-	lazyFont->SetOutline(TTF_STYLE_BOLD);
-	lazyFont->SetHinting(TTF_HINTING_NONE);
-	lazyFont->SetKerning(false);
-	lazyFont->SetSize(26);
+		lazyFont->SetStyle(TTF_STYLE_UNDERLINE);
+		lazyFont->SetOutline(TTF_STYLE_BOLD);
+		lazyFont->SetHinting(TTF_HINTING_NONE);
+		lazyFont->SetKerning(false);
+		lazyFont->SetSize(26);
 
-	message = TTF_RenderText_Solid(lazyFont->GetTTF_Font(), "GameState", textColor);
+		message = TTF_RenderText_Solid(lazyFont->GetTTF_Font(), "GameState", textColor);
 
-	if (!message) {
-		throw TTFException();
+		if (!message) {
+			throw TTFException();
+		}
+		
+		backgroundImage = imageManager->GetImage("background.bmp");
+		backgroundImage->Initialize();
+		
+		backgroundMusic = musicManager->GetMusic("beat.wav");
+		backgroundMusic->Initialize();
+	} catch (const GenericException& genericException) {
+		throw genericException;
 	}
 }
 
@@ -43,21 +54,37 @@ void GameState::OnDeactivate() {
 	}
 
 	message = NULL;
+	
+	if (lazyFont) {
+		lazyFont->Uninitialize();
+	}
+	
+	if (backgroundImage) {
+		backgroundImage->Uninitialize();
+	}
+	
+	if (backgroundMusic) {
+		backgroundMusic->Uninitialize();
+	}
 }
 
 void GameState::OnLoop() {
-
+	musicManager->PlayMusic(backgroundMusic);
 }
 
 void GameState::OnRender(SDL_Surface* parSurface) {
-	//Holds offsets
+	// Holds offsets
 	SDL_Rect offset;
 
-	//Get offsets
+	// Get offsets
 	offset.x = 200;
 	offset.y = 150;
-
-	//Blit
+	
+	// Blit
+	if (SDL_BlitSurface(backgroundImage->GetSDL_Surface(), NULL, parSurface, NULL) == -1) {
+		throw SDLException();
+	}
+	
 	if (SDL_BlitSurface(message, NULL, parSurface, &offset) == -1) {
 		throw SDLException();
 	}

@@ -5,9 +5,7 @@ Font::Font(std::string parName, std::string parPath, int parSize) : fontName(par
 }
 
 Font::~Font() {
-	TTF_CloseFont(font);
-
-	font = NULL;
+	Uninitialize();
 }
 
 void Font::SetSize(int parNewSize) {
@@ -30,4 +28,10 @@ void Font::Initialize() {
 	if (!font) {
 		throw TTFException();
 	}
+}
+
+void Font::Uninitialize() {
+	TTF_CloseFont(font);
+
+	font = NULL;
 }

@@ -9,6 +9,7 @@ class Music {
 		~Music();
 
 		void Initialize();
+		void Uninitialize();
 
 		void Play(int parLoops);
 		void Pause();

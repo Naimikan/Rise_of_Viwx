@@ -5,11 +5,7 @@ Image::Image(std::string parName, std::string parPath) : imageName(parName), ima
 }
 
 Image::~Image() {
-	if (image) {
-        SDL_FreeSurface(image);
-    }
-
-    image = NULL;
+	Uninitialize();
 }
 
 void Image::Initialize() {
@@ -26,4 +22,12 @@ void Image::Initialize() {
 	}
 
 	SDL_FreeSurface(tempSurface);
+}
+
+void Image::Uninitialize() {
+	if (image) {
+        SDL_FreeSurface(image);
+    }
+
+    image = NULL;
 }

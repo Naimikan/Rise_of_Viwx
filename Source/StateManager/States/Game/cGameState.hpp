@@ -3,6 +3,8 @@
 
 #include "../cState.hpp"
 #include "../../../Core/ResourcesManager/Managers/FontManager/cFontManager.hpp"
+#include "../../../Core/ResourcesManager/Managers/ImageManager/cImageManager.hpp"
+#include "../../../Core/ResourcesManager/Managers/MusicManager/cMusicManager.hpp"
 
 class GameState : public State {
 	public:
@@ -20,8 +22,12 @@ class GameState : public State {
 
 		SDL_Surface *message;
 		Font* lazyFont;
+		Image* backgroundImage;
+		Music* backgroundMusic;
 
 		FontManager* fontManager;
+		ImageManager* imageManager;
+		MusicManager* musicManager;
 };
 
 #endif // End _CGAMESTATE_HPP_

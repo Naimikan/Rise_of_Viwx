@@ -27,6 +27,8 @@ void StateManager::OnRender(SDL_Surface* parSurface) {
 		throw sdlException;
 	} catch (const TTFException& ttfException) {
 		throw ttfException;
+	} catch (const MixerException& mixerException) {
+		throw mixerException;
 	}
 }
 
@@ -61,5 +63,9 @@ void StateManager::SetActiveState(int parStateID) {
 		throw sdlException;
 	} catch (const TTFException& ttfException) {
 		throw ttfException;
+	} catch (const MixerException& mixerException) {
+		throw mixerException;
+	} catch (const GenericException& genericException) {
+		throw genericException;
 	}
 }

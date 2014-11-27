@@ -5,9 +5,9 @@ Application::Application() : isRunning(true), screen(NULL) {
 }
 
 int Application::OnExecute() {
+	std::string finalMessage;
+	
 	try {
-		std::string finalMessage;
-
 		Timer fpsManager;
 
 		OnInit();
@@ -56,9 +56,9 @@ int Application::OnExecute() {
 }
 
 bool Application::OnInit() {
+	std::string textException = "OnInit() => ";
+	
 	try {
-		std::string textException = "OnInit() => ";
-
 		SettingsCreator::ConfigureSettingsFile();
 
 		InitializeSDLSystem();

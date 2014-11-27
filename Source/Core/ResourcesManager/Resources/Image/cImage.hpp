@@ -9,6 +9,7 @@ class Image {
 		~Image();
 
 		void Initialize();
+		void Uninitialize();
 
 		std::string GetName() { return imageName; }
 		std::string GetPath() { return imagePath; }

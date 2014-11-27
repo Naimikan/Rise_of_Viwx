@@ -5,9 +5,7 @@ Music::Music(std::string parName, std::string parPath) : musicName(parName), mus
 }
 
 Music::~Music() {
-	Mix_FreeMusic(music);
-
-	music = NULL;
+	Uninitialize();
 }
 
 void Music::Initialize() {
@@ -16,6 +14,12 @@ void Music::Initialize() {
 	if (!music) {
 		throw MixerException();
 	}
+}
+
+void Music::Uninitialize() {
+	Mix_FreeMusic(music);
+
+	music = NULL;
 }
 
 void Music::Play(int parLoops) {
