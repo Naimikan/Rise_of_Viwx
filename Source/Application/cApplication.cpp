@@ -6,6 +6,8 @@ Application::Application() : isRunning(true), screen(NULL) {
 
 int Application::OnExecute() {
 	try {
+		std::string finalMessage;
+
 		Timer fpsManager;
 
 		OnInit();
@@ -25,7 +27,6 @@ int Application::OnExecute() {
 		
 		OnCleanUp();
 	} catch (const SDLException& sdlException) {
-		std::string finalMessage;
 		finalMessage.append("<SDL Error>");
 		finalMessage.append(" => ");
 		finalMessage.append(sdlException.WhatHappens());
@@ -33,7 +34,6 @@ int Application::OnExecute() {
 		Logger::WriteMessageInLogFile(finalMessage.c_str());
 		return -1;
 	} catch (const TTFException& ttfException) {
-		std::string finalMessage;
 		finalMessage.append("<TTF Error>");
 		finalMessage.append(" => ");
 		finalMessage.append(ttfException.WhatHappens());
@@ -41,7 +41,6 @@ int Application::OnExecute() {
 		Logger::WriteMessageInLogFile(finalMessage.c_str());
 		return -1;
 	} catch (const MixerException& mixerException) {
-		std::string finalMessage;
 		finalMessage.append("<Mixer Error>");
 		finalMessage.append(" => ");
 		finalMessage.append(mixerException.WhatHappens());
@@ -58,6 +57,8 @@ int Application::OnExecute() {
 
 bool Application::OnInit() {
 	try {
+		std::string textException = "OnInit() => ";
+
 		SettingsCreator::ConfigureSettingsFile();
 
 		InitializeSDLSystem();
@@ -70,13 +71,21 @@ bool Application::OnInit() {
 
 		return true;
 	} catch (const SDLException& sdlException) {
-		throw sdlException;
+		textException.append(sdlException.WhatHappens());
+
+		throw SDLException(textException);
 	} catch (const TTFException& ttfException) {
-		throw ttfException;
+		textException.append(ttfException.WhatHappens());
+
+		throw TTFException(textException);
 	} catch (const MixerException& mixerException) {
-		throw mixerException;
+		textException.append(mixerException.WhatHappens());
+
+		throw MixerException(textException);
 	} catch (const GenericException& exception) {
-		throw exception;
+		textException.append(exception.WhatHappens());
+
+		throw GenericException(textException);
 	}
 
 	return false;
