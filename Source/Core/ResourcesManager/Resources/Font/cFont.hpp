@@ -6,6 +6,7 @@
 class Font {
 	public:
 		Font(std::string parName, std::string parPath, int parSize);
+		Font(const Font &parFont);
 		~Font();
 
 		/*

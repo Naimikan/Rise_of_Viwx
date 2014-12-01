@@ -4,6 +4,10 @@ Font::Font(std::string parName, std::string parPath, int parSize) : fontName(par
 	
 }
 
+Font::Font(const Font &parFont) : fontName(parFont.fontName), fontPath(parFont.fontPath), fontSize(parFont.fontSize) {
+
+}
+
 Font::~Font() {
 	Uninitialize();
 }

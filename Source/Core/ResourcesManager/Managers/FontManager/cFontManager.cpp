@@ -29,9 +29,9 @@ void FontManager::Initialize(const char* parFontPath) {
 	}
 }
 
-Font* FontManager::GetFont(std::string parFontName) {
+Font FontManager::GetFont(std::string parFontName) {
 	try {
-		Font* foundFont = ResourcesManager::GetFont(parFontName);
+		Font foundFont = ResourcesManager::GetFont(parFontName);
 		return foundFont;
 	} catch (const GenericException& genericException) {
 		throw genericException;

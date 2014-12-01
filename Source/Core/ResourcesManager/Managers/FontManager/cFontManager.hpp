@@ -8,7 +8,7 @@ class FontManager {
 		static FontManager* GetInstance();
 		~FontManager();
 
-		Font* GetFont(std::string parFontName);
+		Font GetFont(std::string parFontName);
 		void Initialize(const char* parFontPath);
 
 		static std::string Lazy;

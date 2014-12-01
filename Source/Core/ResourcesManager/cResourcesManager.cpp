@@ -1,13 +1,13 @@
 #include "cResourcesManager.hpp"
 
-std::map<std::string, Font*> ResourcesManager::fontsList;
+std::map<std::string, Font> ResourcesManager::fontsList;
 std::map<std::string, Image*> ResourcesManager::imagesList;
 std::map<std::string, Sound*> ResourcesManager::soundsList;
 std::map<std::string, Music*> ResourcesManager::musicsList;
 
-Font* ResourcesManager::CreateFont(std::string parFontName, const char* parFontPath, int parFontSize) {
+Font ResourcesManager::CreateFont(std::string parFontName, const char* parFontPath, int parFontSize) {
 	try {
-		Font* newFont = new Font(parFontName, parFontPath, parFontSize);
+		Font newFont(parFontName, parFontPath, parFontSize);
 
 		return newFont;
 	} catch (const TTFException& ttfException) {
@@ -15,7 +15,7 @@ Font* ResourcesManager::CreateFont(std::string parFontName, const char* parFontP
 	}
 }
 
-Font* ResourcesManager::GetFont(std::string parFontName) {
+Font ResourcesManager::GetFont(std::string parFontName) {
 	if (parFontName.empty()) {
 		throw GenericException("FontName required.");
 	}
@@ -24,7 +24,7 @@ Font* ResourcesManager::GetFont(std::string parFontName) {
 		throw GenericException("Fonts list empty.");
 	}
 
-	std::map<std::string, Font*>::const_iterator iteratorFontFound = fontsList.find(parFontName);
+	std::map<std::string, Font>::const_iterator iteratorFontFound = fontsList.find(parFontName);
 
 	if (iteratorFontFound != fontsList.end()) {
 		return iteratorFontFound->second;
@@ -34,9 +34,9 @@ Font* ResourcesManager::GetFont(std::string parFontName) {
 }
 
 void ResourcesManager::DeleteFonts() {
-	for (std::map<std::string, Font*>::iterator mapIterator = fontsList.begin(); mapIterator != fontsList.end(); ++mapIterator) {
+	/*for (std::map<std::string, Font>::iterator mapIterator = fontsList.begin(); mapIterator != fontsList.end(); ++mapIterator) {
 		delete (*mapIterator).second;
-	}
+	}*/
 
 	fontsList.clear();
 }
@@ -63,8 +63,8 @@ void ResourcesManager::InitializeAllFontsByPath(const char* parFontPath) {
 			}*/
 
 			try {
-				Font* newFont = CreateFont(fontName, fullName.c_str());
-				fontsList.insert(std::pair<std::string, Font*>(fontName, newFont));
+				Font newFont = CreateFont(fontName, fullName.c_str());
+				fontsList.insert(std::pair<std::string, Font>(fontName, newFont));
 			} catch (const TTFException& ttfException) {
 				throw ttfException;
 			}
