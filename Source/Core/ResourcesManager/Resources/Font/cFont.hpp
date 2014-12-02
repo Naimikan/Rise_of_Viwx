@@ -5,7 +5,9 @@
 
 class Font {
 	public:
-		Font(std::string parName, std::string parPath, int parSize);
+		Font();
+		// Por defecto, el tamaño de la fuente será de 16
+		Font(std::string parName, std::string parPath, int parSize = 16);
 		Font(const Font &parFont);
 		~Font();
 

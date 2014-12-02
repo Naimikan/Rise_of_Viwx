@@ -5,16 +5,6 @@ std::map<std::string, Image*> ResourcesManager::imagesList;
 std::map<std::string, Sound*> ResourcesManager::soundsList;
 std::map<std::string, Music*> ResourcesManager::musicsList;
 
-Font ResourcesManager::CreateFont(std::string parFontName, const char* parFontPath, int parFontSize) {
-	try {
-		Font newFont(parFontName, parFontPath, parFontSize);
-
-		return newFont;
-	} catch (const TTFException& ttfException) {
-		throw ttfException;
-	}
-}
-
 Font ResourcesManager::GetFont(std::string parFontName) {
 	if (parFontName.empty()) {
 		throw GenericException("FontName required.");
@@ -62,12 +52,8 @@ void ResourcesManager::InitializeAllFontsByPath(const char* parFontPath) {
 				fontName = ResourcesManager::Lazy;
 			}*/
 
-			try {
-				Font newFont = CreateFont(fontName, fullName.c_str());
-				fontsList.insert(std::pair<std::string, Font>(fontName, newFont));
-			} catch (const TTFException& ttfException) {
-				throw ttfException;
-			}
+			Font newFont(fontName, fullName.c_str());
+			fontsList.insert(std::pair<std::string, Font>(fontName, newFont));
 		}
 	}
 

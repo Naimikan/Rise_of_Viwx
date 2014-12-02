@@ -11,7 +11,6 @@
 class ResourcesManager {
 	public:
 		// Fonts
-		// Por defecto, el tamaño de la fuente será de 16
 		static Font GetFont(std::string parFontName);
 		static void DeleteFonts();
 		static void InitializeAllFontsByPath(const char* parFontPath);
@@ -36,8 +35,7 @@ class ResourcesManager {
 			File = 0x8
 			, Folder = 0x4
 		};
-
-		static Font CreateFont(std::string parFontName, const char* parFontPath, int parFontSize = 16);
+		
 		static Sound* CreateSound(std::string parSoundName, const char* parSoundPath);
 		static Music* CreateMusic(std::string parMusicName, const char* parMusicPath);
 		static Image* CreateImage(std::string parImageName, const char* parImagePath);

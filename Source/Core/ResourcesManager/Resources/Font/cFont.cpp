@@ -1,5 +1,9 @@
 #include "cFont.hpp"
 
+Font::Font() {
+	
+}
+
 Font::Font(std::string parName, std::string parPath, int parSize) : fontName(parName), fontPath(parPath), fontSize(parSize) {
 	
 }
